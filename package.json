@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/czbiohub/howmanymolecules/issues"
   },
-  "homepage": "https://github.com/czbiohub/howmanymolecules#readme"
+  "homepage": "https://github.com/czbiohub/howmanymolecules#readme",
+  "dependencies": {
+    "dom-css": "^2.1.0"
+  }
 }
