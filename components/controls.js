@@ -20,23 +20,24 @@ function controls (opts) {
 	expression.type = 'range'
 	box.appendChild(expression)
 
-	var n_molecules = document.createElement('input')
-	n_molecules.type = 'range'
-	box.appendChild(n_molecules)
+	var molecules = document.createElement('input')
+	molecules.type = 'range'
+	box.appendChild(molecules)
 
 	var pcr = document.createElement('input')
 	pcr.type = 'checkbox'
 	box.appendChild(pcr)
 
 	pcr.onchange = function (p) {
-	state['pcr'] = p.target.value
+	  state['pcr'] = p.target.value
 	}
-	n_molecules.onchange = function (n) {
+	molecules.onchange = function (n) {
 		state['n_molecules'] = n.target.value
 	}
 	expression.onchange = function (e) {
 		state['expression'] = e.target.value
 	}
+
 	this.state = state
 	this.box = box
 
