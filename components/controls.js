@@ -32,7 +32,7 @@ function controls (opts) {
 	  state['pcr'] = p.target.value
 	}
 	molecules.onchange = function (n) {
-		state['n_molecules'] = n.target.value
+		state['molecules'] = n.target.value
 	}
 	expression.onchange = function (e) {
 		state['expression'] = e.target.value
