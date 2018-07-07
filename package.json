@@ -24,6 +24,9 @@
   },
   "homepage": "https://github.com/czbiohub/howmanymolecules#readme",
   "dependencies": {
-    "dom-css": "^2.1.0"
+    "d3": "^5.5.0",
+    "dom-css": "^2.1.0",
+    "lodash": "^4.17.10",
+    "prob.js": "^1.0.6"
   }
 }
