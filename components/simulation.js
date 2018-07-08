@@ -1,21 +1,13 @@
 var _ = require('lodash')
-var prob = require('prob.js')
 var d3 = require('d3')
-var css = require('dom-css')
+var coords = require('./coordinates')
+var generate = require('./generate')
 
 var width = 500
 var height = 500
 
 function simulation (params) {
 	if (!(this instanceof simulation)) return new simulation(params)
-
-	var x = d3.scaleLinear()
-	    .domain([0, 1])
-	    .range([0, width])
-
-	var y = d3.scaleLinear()
-	    .domain([0, 1])
-	    .range([0, height])
 
 	var svg = d3.select('body').append('svg')
 	    .attr('width', width)
@@ -26,61 +18,63 @@ function simulation (params) {
 
 	function run () {
 
-		var n1 = params.expression
-		var n2 = Math.round(params.molecules * params.expression)
+		var data = generate(params)
 
-		var rx = prob.uniform(0.3, 0.6)
-		var ry = prob.uniform(0.1, 0.4)
-		var initial = Array(n1).fill(0).map(function (d) {
-			return [rx(), ry()]
-		})
-
-		var rx = prob.uniform(0.3, 0.6)
-		var ry = prob.uniform(0.6, 0.9)
-		var final = Array(n2).fill(0).map(function (d) {
-			return [rx(), ry()]
-		})
+		console.log(data)
 
 		var circle = svg.selectAll('rect').remove()
 
 		var circle = svg.selectAll('rect')
-		    .data(initial)
+		    .data(data.one)
 		  .enter().append('rect')
 		  	.attr('width', 40)
 		    .attr('height', 15)
 		    .attr('rx', 7)
 		    .attr('ry', 10)
-		    .attr('x', function (d) {return x(d[0])})
-		    .attr('y', function (d) {return y(d[1])})
-		    .style('fill', '#F768A1')
+		    .attr('x', function (d) {return coords.one.x(d[0])})
+		    .attr('y', function (d) {return coords.one.y(d[1])})
+		    .style('fill', function (d) {
+		    	if (d[2] == 1) return '#F768A1'
+		    	return '#C4C4C4'
+		    })
 		    .style('stroke', 'black')
 
-		circle = circle.data(final)
+		circle = circle.data(data.two)
 
 		circle.transition()
-		  .duration(1500)
-		  .attr('x', function (d) {return x(d[0])})
-		  .attr('y', function (d) {return y(d[1])})
-
-		circle.enter().append('rect')
-		  .attr('width', 40)
-		  .attr('height', 15)
-		  .attr('rx', 7)
-		  .attr('ry', 10)
-		  .attr('x', function (d) {return x(d[0])})
-		  .attr('y', function (d) {return y(d[1])})
+		  .duration(500)
+		  .attr('x', function (d) {return coords.two.x(d[0])})
+		  .attr('y', function (d) {return coords.two.y(d[1])})
 
 		circle.exit().transition()
-		  .duration(500)
+		  .duration(250)
 		  .style('opacity', 0)
 		  .remove()
+
+		// setTimeout(function () {
+		// 	circle = circle.data(data.three)
+
+		// 	circle.transition()
+		// 	  .duration(1500)
+		// 	  .attr('x', function (d) {return coords.three.x(d[0])})
+		// 	  .attr('y', function (d) {return coords.three.y(d[1])})
+
+		// 	circle.enter().append('rect')
+		// 		.attr('width', 40)
+		// 		.attr('height', 15)
+		// 		.attr('rx', 7)
+		// 		.attr('ry', 10)
+		// 		.attr('x', function (d) {return coords.three.x(d[0])})
+		// 		.attr('y', function (d) {return coords.three.y(d[1])})
+
+		// }, 2000)
 	}
 
 	run()
 
 	setInterval(function () {
 		run()
-	}, 2000)
+	}, 1000)
 
 }
 
