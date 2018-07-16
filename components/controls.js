@@ -9,12 +9,13 @@ function controls (opts) {
   var box = document.createElement('div')
 
   css(box, {
-    backgroundColor: 'rgb(100,100,100)',
+    backgroundColor: 'rgb(200,200,200)',
     width: '170px',
     height: '100%',
     position: 'absolute',
     left: '0px',
-    top: '0px'
+    top: '0px',
+    borderRight: 'solid 4px rgb(100,100,100)'
   })
 
   var label = document.createElement('div')

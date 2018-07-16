@@ -1,32 +1,78 @@
 var d3 = require('d3')
 
-var coordinates = {one: {}, two: {}, three: {}}
+var coordinates = {0: {}, 1: {}, 2: {}}
 
-// coordinates of the cell (stage one)
-coordinates.one.x = d3.scaleLinear()
-  .domain([-1, 1])
-  .range([20, 220])
+// cell #0
 
-coordinates.one.y = d3.scaleLinear()
-  .domain([-1, 1])
-  .range([20, 220])
+coordinates[0].cell = {
+	x: d3.scaleLinear()
+	  .domain([-1, 1])
+	  .range([50, 250]),
+  y: d3.scaleLinear()
+	  .domain([-1, 1])
+	  .range([50, 250])
+}
 
-// coordinates of the sample space (stage two)
-coordinates.two.x = d3.scaleLinear()
-	.domain([-1, 1])
-	.range([20, 220])
+coordinates[0].sample = {
+	x: d3.scaleLinear()
+		.domain([-1, 1])
+		.range([50, 250]),
+	y: d3.scaleLinear()
+		.domain([-1, 1])
+		.range([300, 500])
+}
 
-coordinates.two.y = d3.scaleLinear()
-	.domain([-1, 1])
-	.range([220, 420])
+coordinates[0].count = {
+	x: d3.scaleLinear()
+		.domain([0, 20])
+		.range([50, 500]),
+	y: d3.scaleLinear()
+		.domain([-1, 1])
+		.range([550, 700])
+}
 
-// coordinates of the PCR space (stage three)
-coordinates.three.x = d3.scaleLinear()
-	.domain([-1, 1])
-	.range([20, 220])
+// cell #1
 
-coordinates.three.y = d3.scaleLinear()
-	.domain([-1, 1])
-	.range([420, 620])
+coordinates[1].cell = {
+	x: d3.scaleLinear()
+	  .domain([-1, 1])
+	  .range([300, 500]),
+  y: d3.scaleLinear()
+	  .domain([-1, 1])
+	  .range([50, 250])
+}
+
+coordinates[1].sample = {
+	x: d3.scaleLinear()
+		.domain([-1, 1])
+		.range([300, 500]),
+	y: d3.scaleLinear()
+		.domain([-1, 1])
+		.range([300, 500])
+}
+
+coordinates[1].count = coordinates[0].count
+
+// cell #2
+
+coordinates[2].cell = {
+	x: d3.scaleLinear()
+	  .domain([-1, 1])
+	  .range([550, 750]),
+  y: d3.scaleLinear()
+	  .domain([-1, 1])
+	  .range([50, 250])
+}
+
+coordinates[2].sample = {
+	x: d3.scaleLinear()
+		.domain([-1, 1])
+		.range([550, 750]),
+	y: d3.scaleLinear()
+		.domain([-1, 1])
+		.range([300, 500])
+}
+
+coordinates[2].count = coordinates[0].count
 
 module.exports = coordinates
