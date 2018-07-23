@@ -1,12 +1,22 @@
 var css = require('dom-css')
+var inherits = require('inherits')
+var EventEmitter = require('events').EventEmitter
+
+inherits(controls, EventEmitter)
 
 function controls (opts) {
   if (!(this instanceof controls)) return new controls(opts)
+
+  var self = this
 
   opts = opts || {}
   opts.root = opts.root || document.body
 
   var box = document.createElement('div')
+  var values = {}
+  var labels = {}
+  var inputs = {}
+  var group = {}
 
   css(box, {
     backgroundColor: 'rgb(200,200,200)',
@@ -18,73 +28,113 @@ function controls (opts) {
     borderRight: 'solid 4px rgb(100,100,100)'
   })
 
-  var label = document.createElement('div')
-  label.innerHTML = 'molecules'
-  box.appendChild(label)
+  var title = document.createElement('div')
+  title.innerHTML = 'howmanymolecules'
+  box.appendChild(title)
 
-  var molecules = document.createElement('input')
-  molecules.type = 'range'
-  molecules.min = 0
-  molecules.max = 100
-  molecules.value = 50
-  molecules.step = 1
-  box.appendChild(molecules)
+  function make (name, type, params) {
+    group[name] = document.createElement('div')
+    css(group[name], {
+      marginBottom: '10px',
+      marginTop: '10px'
+    })
+    box.appendChild(group[name])
 
-  var label = document.createElement('div')
-  label.innerHTML = 'expression'
-  box.appendChild(label)
+    labels[name] = document.createElement('div')
+    labels[name].innerHTML = name
+    group[name].appendChild(labels[name])
 
-  var expression = document.createElement('input')
-  expression.type = 'range'
-  expression.min = 0
-  expression.max = 100
-  expression.value = 10
-  expression.step = 1
-  box.appendChild(expression)
+    if (type == 'range') {
+      inputs[name] = document.createElement('input')
+      inputs[name].type = 'range'
+      inputs[name].min = params.min
+      inputs[name].max = params.max
+      inputs[name].step = params.step
+      inputs[name].value = params.value
+      group[name].appendChild(inputs[name])
+    }
 
-  var label = document.createElement('div')
-  label.innerHTML = 'samples'
-  box.appendChild(label)
+    if (type == 'checkbox') {
+      inputs[name] = document.createElement('input')
+      inputs[name].type = 'checkbox'
+      inputs[name].checked = params.value
+      group[name].appendChild(inputs[name])
+    }
+    
+    values[name] = document.createElement('div')
+    values[name].innerHTML = inputs[name].value
+    group[name].appendChild(values[name])
+  }
 
-  var samples = document.createElement('input')
-  samples.type = 'range'
-  samples.min = 0
-  samples.max = 1
-  samples.step = 0.1
-  box.appendChild(samples)
+  make('molecules', 'range', {min: 0, max: 100, value: 50, step: 1})
+  make('expression', 'range', {min: 0, max: 100, value: 10, step: 1})
+  make('samples', 'range', {min: 0, max: 1, value: 0.7, step: 0.01})
+  make('pcr', 'checkbox', {value: true})
 
-  var label = document.createElement('div')
-  label.innerHTML = 'PCR'
-  box.appendChild(label)
+  
+  var play1x = document.createElement('button')
+  play1x.innerHTML = 'play 1x'
+  box.appendChild(play1x)
 
-  var pcr = document.createElement('input')
-  pcr.type = 'checkbox'
-  box.appendChild(pcr)
+  var play3x = document.createElement('button')
+  play3x.innerHTML = 'play 3x'
+  box.appendChild(play3x)
+
+  var play10x = document.createElement('button')
+  play10x.innerHTML = 'play 10x'
+  box.appendChild(play10x)
+
+  var play100x = document.createElement('button')
+  play100x.innerHTML = 'play 100x'
+  box.appendChild(play100x)
+
+  var clear = document.createElement('button')
+  clear.innerHTML = 'clear'
+  box.appendChild(clear)
 
   var state = {
-    'pcr': pcr.value,
-    'molecules': parseFloat(molecules.value),
-    'expression': parseFloat(expression.value),
-    'samples': parseFloat(samples.value)
+    'pcr': inputs['pcr'].value,
+    'molecules': parseFloat(inputs['molecules'].value),
+    'expression': parseFloat(inputs['expression'].value),
+    'samples': parseFloat(inputs['samples'].value),
   }
 
-  pcr.onchange = function (p) {
-    state['pcr'] = p.target.value
+  inputs['pcr'].oninput = function (e) {
+    state['pcr'] = e.target.checked
   }
-  molecules.onchange = function (n) {
-    state['molecules'] = parseFloat(n.target.value)
+  inputs['molecules'].oninput = function (e) {
+    state['molecules'] = parseFloat(e.target.value)
+    values['molecules'].innerHTML = state['molecules']
   }
-  expression.onchange = function (e) {
+  inputs['expression'].oninput = function (e) {
     state['expression'] = parseFloat(e.target.value)
+    values['expression'].innerHTML = state['expression']
   }
-  samples.onchange = function (e) {
+  inputs['samples'].oninput = function (e) {
     state['samples'] = parseFloat(e.target.value)
+    values['samples'].innerHTML = state['samples']
+  }
+
+  play1x.onclick = function (e) {
+    self.emit('play', '1x')
+  }
+  play3x.onclick = function (e) {
+    self.emit('play', '3x')
+  }
+  play10x.onclick = function (e) {
+    self.emit('play', '10x')
+  }
+  play100x.onclick = function (e) {
+    self.emit('play', '100x')
+  }
+  clear.onclick = function (e) {
+    self.emit('clear', true)
   }
 
   opts.root.appendChild(box)
 
-  this.state = state
-  this.box = box
+  self.state = state
+  self.box = box
 }
 
 module.exports = controls
