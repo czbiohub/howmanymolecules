@@ -1,4 +1,7 @@
-function animate (svg, data, coords, duration, index) {
+function animate (svg, data, coords, histogram, duration, index) {
+
+  // primary animation loop for molecules
+  
   var pill = svg.selectAll('.pill' + index).remove()
 
   var pill = svg.selectAll('.pill' + index)
@@ -45,8 +48,8 @@ function animate (svg, data, coords, duration, index) {
       .style('opacity', function (d) {return (d[2] == 0) ? 0 : 1})
     .transition()
       .duration(duration * 0.15)
-      .attr('x', function (d) {return coords.count.x(d[9])})
-      .attr('y', function (d) {return coords.count.y(0)})
+      .attr('x', function (d) {return histogram.x(d[9])})
+      .attr('y', function (d) {return histogram.y(0.01)})
       .attr('width', 20)
       .attr('height', 20)
       .attr('rx', 10)

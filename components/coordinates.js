@@ -1,6 +1,6 @@
 var d3 = require('d3')
 
-var coordinates = {0: {}, 1: {}, 2: {}}
+var coordinates = {0: {}, 1: {}, 2: {}, histogram: null}
 
 // cell #0
 
@@ -20,15 +20,6 @@ coordinates[0].sample = {
   y: d3.scaleLinear()
     .domain([-1, 1])
     .range([300, 500])
-}
-
-coordinates[0].count = {
-  x: d3.scaleLinear()
-    .domain([0, 40])
-    .range([50, 700]),
-  y: d3.scaleLinear()
-    .domain([0, 0.1])
-    .range([700, 550])
 }
 
 // cell #1
@@ -51,8 +42,6 @@ coordinates[1].sample = {
     .range([300, 500])
 }
 
-coordinates[1].count = coordinates[0].count
-
 // cell #2
 
 coordinates[2].cell = {
@@ -73,6 +62,16 @@ coordinates[2].sample = {
     .range([300, 500])
 }
 
-coordinates[2].count = coordinates[0].count
+// histogram
 
+coordinates['histogram'] = {
+  x: d3.scaleLinear()
+    .domain([0, 60])
+    .range([50, 775])
+    .clamp(true),
+  y: d3.scaleLinear()
+    .domain([0, 0.1])
+    .range([700, 550])
+    .clamp(true)
+}
 module.exports = coordinates

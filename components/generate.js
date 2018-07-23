@@ -76,6 +76,8 @@ function generate (params) {
   function four (init) {
     var filtered = _.filter(init, function (d) {return d[5] == 1})
     var counts = _.countBy(filtered, function (d) {return d[2]}) 
+    counts[0] = counts[0] || 0
+    counts[1] = counts[1] || 0
     return counts
   }
 
