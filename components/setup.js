@@ -25,12 +25,12 @@ function setup (svg, coords, layout) {
       .style('stroke-width', 2)
       .attr('transform', 'translate(8,5)')
   }
-  
+
   if (layout == 'histogram') {
     svg.append('rect')
-      .attr('width', 725)
+      .attr('width', 960)
       .attr('height', 175)
-      .attr('x', coords.x(0))
+      .attr('x', coords.x(0) - 15)
       .attr('y', coords.y(0.1))
       .style('fill', 'white')
       .style('stroke', 'rgb(100,100,100)')
