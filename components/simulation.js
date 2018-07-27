@@ -30,8 +30,6 @@ function simulation (controls) {
 
   var id, counts1, counts2, hist1, hist2
 
-  var history = [100, 500] // history for histogram ticks [0] and kde [1]
-
   controls.on('play', function (e) {
     if (e == '1x') play(3000, true)
     if (e == '3x') play(1000, true)
@@ -68,6 +66,12 @@ function simulation (controls) {
 
     // simulate three cells
     var sim = [generate(controls.state), generate(controls.state), generate(controls.state), generate(controls.state)]
+
+    if (controls.state['historylim']) {
+      var history = [50, 250]
+    } else {
+      var history = [1500, 1500]
+    }
 
     // animate three cells
     if (display) {

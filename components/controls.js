@@ -70,8 +70,9 @@ function controls (opts) {
   make('expression', 'range', {min: 0, max: 100, value: 10, step: 1})
   make('samples', 'range', {min: 0, max: 1, value: 0.7, step: 0.01})
   make('pcr', 'checkbox', {value: true})
+  make('historylim', 'checkbox', {value: true})
 
-  
+
   var play1x = document.createElement('button')
   play1x.innerHTML = 'play 1x'
   box.appendChild(play1x)
@@ -97,6 +98,7 @@ function controls (opts) {
     'molecules': parseFloat(inputs['molecules'].value),
     'expression': parseFloat(inputs['expression'].value),
     'samples': parseFloat(inputs['samples'].value),
+    'historylim': inputs['historylim'].value,
   }
 
   inputs['pcr'].oninput = function (e) {
@@ -113,6 +115,9 @@ function controls (opts) {
   inputs['samples'].oninput = function (e) {
     state['samples'] = parseFloat(e.target.value)
     values['samples'].innerHTML = state['samples']
+  }
+  inputs['historylim'].oninput = function (e) {
+    state['historylim'] = e.target.checked
   }
 
   play1x.onclick = function (e) {
