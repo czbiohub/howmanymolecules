@@ -28,7 +28,7 @@ function simulation (controls) {
   setup(svg, coords[3], 'cell')
   setup(svg, coords['histogram'], 'histogram')
 
-  var id, counts1, counts2, hist1, hist2
+  var id, counts1, counts2, hist1, hist2, true_counts, true_hist
 
   var history = [100, 500] // history for histogram ticks [0] and kde [1]
 
@@ -54,22 +54,48 @@ function simulation (controls) {
   function clear () {
     counts1 = [] // reset count vector
     counts2 = []
+    true_counts = []
     if (id) clearInterval(id)  // clear current loop
     if (hist1) clearTimeout(hist1)  // clear current loop
     if (hist2) clearTimeout(hist2)
+    if (true_hist) {
+      clearTimeout(true_hist)
+      svg.selectAll('.path' + 2).remove()
+    }
+
     svg.selectAll('.count' + 0).remove() // clear all histogram ticks
     svg.selectAll('.count' + 1).remove()
     svg.selectAll('.path' + 0).remove() // clear the path
     svg.selectAll('.path' + 1).remove()
     _.forEach([0, 1, 2, 3], function (d) {svg.selectAll('.pill' + d).remove()}) // clear all molecules
+
+  }
+
+  function show_true_distrib(controls, duration, history) {
+
+      var true_params = controls.state
+      true_params.samples = 1.0
+      true_params.pcr = false
+
+      true_counts = []
+      for (cell in _.range(0, 1000)) {
+        true_counts.push(generate(true_params).count)
+      }
+
+      var true_history = [0, 1000]
+      true_hist = histogram(svg, true_counts, coords['histogram'], duration, true_history, '#646464', 2)
+      return true_counts
   }
 
   function once (duration, display) {
+    if (controls.state.showtrue) {
+      show_true_distrib(controls, duration, history)
+    }
 
-    // simulate three cells
+    // simulate four cells
     var sim = [generate(controls.state), generate(controls.state), generate(controls.state), generate(controls.state)]
 
-    // animate three cells
+    // animate four cells
     if (display) {
       animate(svg, sim[0], coords[0], coords['histogram'], duration, '#F768A1', 0)
       animate(svg, sim[1], coords[1], coords['histogram'], duration, '#F768A1', 1)
@@ -88,6 +114,8 @@ function simulation (controls) {
     // demo2 = histogram(svg, random_array_demo2,)
     hist2 = histogram(svg, counts2, coords['histogram'], duration, history, '#B191DB', 1)
   }
+
+
 }
 
 module.exports = simulation

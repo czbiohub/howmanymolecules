@@ -60,7 +60,7 @@ function controls (opts) {
       inputs[name].checked = params.value
       group[name].appendChild(inputs[name])
     }
-    
+
     values[name] = document.createElement('div')
     values[name].innerHTML = inputs[name].value
     group[name].appendChild(values[name])
@@ -70,8 +70,8 @@ function controls (opts) {
   make('expression', 'range', {min: 0, max: 100, value: 10, step: 1})
   make('samples', 'range', {min: 0, max: 1, value: 0.7, step: 0.01})
   make('pcr', 'checkbox', {value: true})
+  make('showtrue', 'checkbox', {value: false})
 
-  
   var play1x = document.createElement('button')
   play1x.innerHTML = 'play 1x'
   box.appendChild(play1x)
@@ -101,6 +101,9 @@ function controls (opts) {
 
   inputs['pcr'].oninput = function (e) {
     state['pcr'] = e.target.checked
+  }
+  inputs['showtrue'].oninput = function (e) {
+    state['showtrue'] = e.target.checked
   }
   inputs['molecules'].oninput = function (e) {
     state['molecules'] = parseFloat(e.target.value)
