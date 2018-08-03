@@ -50,8 +50,8 @@ function simulation (controls) {
   }
 
   function clear () {
-    counts1 = [] // reset count vector
-    counts2 = []
+    counts0 = [] // reset count vector
+    counts1 = []
 
     if (id) clearInterval(id)  // clear current loop
     if (hist0) clearTimeout(hist0)  // clear current loop
@@ -102,15 +102,15 @@ function simulation (controls) {
     }
 
     // store the total cell counts
-    counts1.push(sim[0].count)
-    counts1.push(sim[1].count)
-    counts2.push(sim[2].count)
-    counts2.push(sim[3].count)
+    counts0.push(sim[0].count)
+    counts0.push(sim[1].count)
+    counts1.push(sim[2].count)
+    counts1.push(sim[3].count)
 
     // render the histogram
-    hist1 = histogram(svg, counts1, coords['histogram'], duration, history, controls.state['pop0_params']['color'], 0)
+    hist1 = histogram(svg, counts0, coords['histogram'], duration, history, controls.state['pop0_params']['color'], 0)
     // demo2 = histogram(svg, random_array_demo2,)
-    hist2 = histogram(svg, counts2, coords['histogram'], duration, history, controls.state['pop1_params']['color'], 1)
+    hist2 = histogram(svg, counts1, coords['histogram'], duration, history, controls.state['pop1_params']['color'], 1)
   }
 
 
