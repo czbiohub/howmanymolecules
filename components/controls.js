@@ -139,7 +139,7 @@ function controls (opts) {
   },
 }
 
-if (state['comparepops'] == false) {
+if (!state['comparepops']) {
   state['pop1_params'] = state['pop0_params']
 } else {
   state['pop1_params'] = {
