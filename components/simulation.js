@@ -28,7 +28,7 @@ function simulation (controls) {
   setup(svg, coords[3], 'cell')
   setup(svg, coords['histogram'], 'histogram')
 
-  var id, counts1, counts2, hist1, hist2, true_counts, true_hist
+  var id, counts0, counts1, hist0, hist1, true_hist0, true_hist1
 
   controls.on('play', function (e) {
     if (e == '1x') play(3000, true)
@@ -52,13 +52,17 @@ function simulation (controls) {
   function clear () {
     counts1 = [] // reset count vector
     counts2 = []
-    true_counts = []
+
     if (id) clearInterval(id)  // clear current loop
-    if (hist1) clearTimeout(hist1)  // clear current loop
-    if (hist2) clearTimeout(hist2)
-    if (true_hist) {
-      clearTimeout(true_hist)
+    if (hist0) clearTimeout(hist0)  // clear current loop
+    if (hist1) clearTimeout(hist1)
+    if (true_hist0) {
+      clearTimeout(true_hist0)
       svg.selectAll('.path' + 2).remove()
+    }
+    if (true_hist1) {
+      clearTimeout(true_hist1)
+      svg.selectAll('.path'+3).remove()
     }
 
     svg.selectAll('.count' + 0).remove() // clear all histogram ticks
@@ -66,34 +70,24 @@ function simulation (controls) {
     svg.selectAll('.path' + 0).remove() // clear the path
     svg.selectAll('.path' + 1).remove()
     _.forEach([0, 1, 2, 3], function (d) {svg.selectAll('.pill' + d).remove()}) // clear all molecules
-
-  }
-
-  function show_true_distrib(controls, duration, history) {
-
-      var true_params = controls.state
-      true_params.samples = 1.0
-      true_params.pcr = false
-
-      true_counts = []
-      for (cell in _.range(0, 1000)) {
-        true_counts.push(generate(true_params).count)
-      }
-
-      var true_history = [0, 1000]
-      true_hist = histogram(svg, true_counts, coords['histogram'], duration, true_history, '#646464', 2)
-      return true_counts
   }
 
   function once (duration, display) {
-    if (controls.state.showtrue) {
-      show_true_distrib(controls, duration, history)
+
+    console.log(controls.state['shared_params'])
+
+    if (controls.state['shared_params']['showtrue'] == true) {
+      true_hist0 = histogram(svg, controls.state['pop0_params']['true_counts'], coords['histogram'], duration, [0, 1000], '#646464', 2)
+
+      if (controls.state['shared_params']['comparepops'] == true) {
+        true_hist1 = histogram(svg, controls.state['pop1_params']['true_counts'], coords['histogram'], duration, [0, 1000], '#646464', 3)
+      }
     }
 
     // simulate four cells
-    var sim = [generate(controls.state), generate(controls.state), generate(controls.state), generate(controls.state)]
+    var sim = [generate(controls.state['pop0_params']), generate(controls.state['pop0_params']), generate(controls.state['pop1_params']), generate(controls.state['pop1_params'])]
 
-    if (controls.state['historylim']) {
+    if (controls.state['shared_params']['historylim']) {
       var history = [50, 250]
     } else {
       var history = [1500, 1500]
@@ -101,10 +95,10 @@ function simulation (controls) {
 
     // animate four cells
     if (display) {
-      animate(svg, sim[0], coords[0], coords['histogram'], duration, '#F768A1', 0)
-      animate(svg, sim[1], coords[1], coords['histogram'], duration, '#F768A1', 1)
-      animate(svg, sim[2], coords[2], coords['histogram'], duration, '#B191DB', 2)
-      animate(svg, sim[3], coords[3], coords['histogram'], duration, '#B191DB', 3)
+      animate(svg, sim[0], coords[0], coords['histogram'], duration, controls.state['pop0_params']['color'], 0)
+      animate(svg, sim[1], coords[1], coords['histogram'], duration, controls.state['pop0_params']['color'], 1)
+      animate(svg, sim[2], coords[2], coords['histogram'], duration, controls.state['pop1_params']['color'], 2)
+      animate(svg, sim[3], coords[3], coords['histogram'], duration, controls.state['pop1_params']['color'], 3)
     }
 
     // store the total cell counts
@@ -114,9 +108,9 @@ function simulation (controls) {
     counts2.push(sim[3].count)
 
     // render the histogram
-    hist1 = histogram(svg, counts1, coords['histogram'], duration, history, '#F768A1', 0)
+    hist1 = histogram(svg, counts1, coords['histogram'], duration, history, controls.state['pop0_params']['color'], 0)
     // demo2 = histogram(svg, random_array_demo2,)
-    hist2 = histogram(svg, counts2, coords['histogram'], duration, history, '#B191DB', 1)
+    hist2 = histogram(svg, counts2, coords['histogram'], duration, history, controls.state['pop1_params']['color'], 1)
   }
 
 
