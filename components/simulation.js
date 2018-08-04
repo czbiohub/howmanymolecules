@@ -60,7 +60,7 @@ function clear_true_distrib() {
   }
   if (true_hist1) {
     clearTimeout(true_hist1)
-    svg.selectAll('.path'+2).remove()
+    svg.selectAll('.path'+3).remove()
   }
 }
 
