@@ -18,14 +18,14 @@ function generate (params) {
   // create n total molecules with e expressing gene of interest
   // where e is drawn from a poisson with mean u
   // sample positions randomly on the unit sphere
-  function one () {
-    var n = params.molecules
-    var u = params.expression
+  function create () {
+    var n = params.nmolecules
+    var u = params.expression*params.nmolecules
     var rand = prob.uniform(0, 1)
     var e = prob.poisson(u)()
     if (e >= n) e = (n - 1)
     var data = []
-    for (i = 0; i < n; i++) { 
+    for (i = 0; i < n; i++) {
       var r = 0.8 * Math.sqrt(rand())
       var t = rand() * 2 * Math.PI
       var x = r * Math.cos(t)
@@ -41,7 +41,7 @@ function generate (params) {
   // randomly sample each molecule based on the sampling probability
   // we don't drop samples from the array
   // rather we just store whether it's a sample or not
-  function two (init) {
+  function sample (init) {
     var rand = prob.uniform(0, 1)
     var data = init.map(function (d) {
       var sample = (rand() < params.samples) ? 1 : 0
@@ -53,7 +53,7 @@ function generate (params) {
   // stage three
   // apply PCR to a random subset of molecules
   // by creating and storing an additional copy at random
-  function three (init) {
+  function amplify (init) {
     var r = prob.uniform(0, 1)
     var init = _.map(init, function (d) {
       return _.concat(d, 0)
@@ -73,9 +73,9 @@ function generate (params) {
   // stage four
   // count the total number of molecules
   // ignoring those removed during sampling
-  function four (init) {
+  function count (init) {
     var filtered = _.filter(init, function (d) {return d[5] == 1})
-    var counts = _.countBy(filtered, function (d) {return d[2]}) 
+    var counts = _.countBy(filtered, function (d) {return d[2]})
     counts[0] = counts[0] || 0
     counts[1] = counts[1] || 0
     return counts
@@ -84,12 +84,12 @@ function generate (params) {
   // stage five
   // determine normalized positions in a count "bucket"
   // by iterating over elements and stacking vertically
-  function five (init, counts) {
-    
+  function stack (init, counts) {
+
     var w = Math.min(((counts[1] > counts[0]) ? (2 / counts[1]) : (2 / counts[0])) * 0.8, 0.05)
     var dy0 = -0.75 // initial vertical position
     var dy1 = -0.75 // initial vertical position
-    for (i = 0; i < init.length; i++) { 
+    for (i = 0; i < init.length; i++) {
       if (init[i][2]) {
         init[i][7] = 0.25
         init[i][8] = dy1
@@ -107,11 +107,11 @@ function generate (params) {
 
   // cascade a full run of the simulation
   // return the final data array and the total gene count
-  data = one()
-  data = two(data)
-  data = three(data)
-  counts = four(data)
-  data = five(data, counts)
+  data = create()
+  data = sample(data)
+  data = amplify(data)
+  counts = count(data)
+  data = stack(data, counts)
   return {data: data, count: counts[1]}
 }
 

@@ -47,17 +47,18 @@ function animate (svg, data, coords, histogram, duration, color, index) {
       .style('stroke', 'none')
     .transition() //remove the gray count bar
       .duration(duration * 0.1)
-      .style('opacity', function (d) {return ((d[5]) & (d[2] == 0)) ? 0 : 0.75})
+      .style('opacity', function (d) {return ((d[5]) & (d[2] == 0)) ? 0 : 1})//0.75})
     .transition() //move the colored bar to the histogram
       .duration(duration * 0.15)
-
+      .attr('class', function (d) {return d[5] ? 'sample'+index : 'pill'+index})
       .attr('x', function (d) {return d[5] ? histogram.x(d[9]) : coords.cell.x(d[0])})
       .attr('y', function (d) {return d[5] ? histogram.y(0.01) : coords.cell.y(d[1])})
       .attr('width', function (d) {return d[5] ? 20 : 40})
       .attr('height', function (d) {return d[5] ? 20 : 15})
+      .style('opacity', function (d) {return ((d[5]) & (d[2] == 0)) ? 0 : 0.75})
       .attr('rx', 10)
       .attr('ry', 10)
-      .on('end', console.log('all done'))
+      // .on('end', console.log('all done'))
 }
 
 module.exports = animate
