@@ -20,7 +20,7 @@ function generate (params) {
   // sample positions randomly on the unit sphere
   function create () {
     var n = params.nmolecules
-    var u = params.expression
+    var u = params.expression*params.nmolecules
     var rand = prob.uniform(0, 1)
     var e = prob.poisson(u)()
     if (e >= n) e = (n - 1)

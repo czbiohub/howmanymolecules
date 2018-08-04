@@ -36,7 +36,7 @@ function controls (opts) {
   title.innerHTML = 'howmanymolecules'
   box.appendChild(title)
 
-  function make (name, type, params) {
+  function make (name, label, type, params) {
     group[name] = document.createElement('div')
     css(group[name], {
       marginBottom: '10px',
@@ -45,7 +45,7 @@ function controls (opts) {
     box.appendChild(group[name])
 
     labels[name] = document.createElement('div')
-    labels[name].innerHTML = name
+    labels[name].innerHTML = label
     group[name].appendChild(labels[name])
 
     if (type == 'range') {
@@ -70,13 +70,13 @@ function controls (opts) {
     group[name].appendChild(values[name])
   }
 
-  make('nmolecules', 'range', {min: 0, max: 100, value: 50, step: 1})
-  make('expression', 'range', {min: 0, max: 100, value: 10, step: 1})
-  make('samples', 'range', {min: 0, max: 1, value: 0.7, step: 0.01})
-  make('pcr', 'checkbox', {value: true})
-  make('historylim', 'checkbox', {value: true})
-  make('showtrue', 'checkbox', {value: false})
-  make('comparepops', 'checkbox', {value: true})
+  make('nmolecules', 'Total molecules per cell', 'range', {min: 0, max: 100, value: 50, step: 1})
+  make('expression', 'Expression level', 'range', {min: 0, max: 1, value: .2, step: .01})
+  make('samples', 'Sampling depth', 'range', {min: 0, max: 1, value: 0.7, step: 0.01})
+  make('pcr', 'Amplify?', 'checkbox', {value: true})
+  make('historylim', 'Accumulate all samples?', 'checkbox', {value: true})
+  make('showtrue', 'Show true distribution?', 'checkbox', {value: false})
+  make('comparepops', 'Compare two populations?', 'checkbox', {value: true})
 
   var play1x = document.createElement('button')
   play1x.innerHTML = 'play 1x'
