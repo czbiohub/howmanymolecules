@@ -102,15 +102,17 @@ function simulation (controls) {
     // store the total cell counts
     counts0.push(sim[0].count)
     counts0.push(sim[1].count)
-    counts1.push(sim[2].count)
-    counts1.push(sim[3].count)
 
-    // render the histogram
-    hist1 = histogram(svg, counts0, coords['histogram'], duration, history, controls.state['pop0_params']['color'], 0)
-    // demo2 = histogram(svg, random_array_demo2,)
-    hist2 = histogram(svg, counts1, coords['histogram'], duration, history, controls.state['pop1_params']['color'], 1)
-  }
-
+    if (controls.state['shared_params']['comparepops']) {
+      counts1.push(sim[2].count)
+      counts1.push(sim[3].count)
+      hist1 = histogram(svg, counts1, coords['histogram'], duration, history, controls.state['pop1_params']['color'], 1)
+    } else {
+      counts0.push(sim[2].count)
+      counts0.push(sim[3].count)
+    }
+    hist0 = histogram(svg, counts0, coords['histogram'], duration, history, controls.state['pop0_params']['color'], 0)
+    }
 
 }
 
