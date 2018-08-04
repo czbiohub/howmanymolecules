@@ -73,7 +73,7 @@ function controls (opts) {
   make('nmolecules', 'Total molecules per cell', 'range', {min: 0, max: 100, value: 50, step: 1})
   make('expression', 'Expression level', 'range', {min: 0, max: 1, value: .2, step: .01})
   make('samples', 'Sampling depth', 'range', {min: 0, max: 1, value: 0.7, step: 0.01})
-  make('pcr', 'Amplify?', 'checkbox', {value: true})
+  make('pcr', 'Amplify?', 'checkbox', {value: false})
   make('accumulate_history', 'Accumulate all samples?', 'checkbox', {value: false})
   make('showtrue', 'Show true distribution?', 'checkbox', {value: false})
   make('comparepops', 'Compare two populations?', 'checkbox', {value: true})
@@ -136,12 +136,12 @@ function controls (opts) {
 
   var state = {
     'shared_params': {
-    'accumulate_history': inputs['accumulate_history'].value,
-    'showtrue': inputs['showtrue'].value,
-    'comparepops': inputs['comparepops'].value,
+    'accumulate_history': inputs['accumulate_history'].checked,
+    'showtrue': inputs['showtrue'].checked,
+    'comparepops': inputs['comparepops'].checked,
   },
   'pop0_params': {
-    'pcr': inputs['pcr'].value,
+    'pcr': inputs['pcr'].checked,
     'nmolecules': parseFloat(inputs['nmolecules'].value),
     'expression': parseFloat(inputs['expression'].value),
     'samples': parseFloat(inputs['samples'].value),
@@ -154,7 +154,7 @@ function setup_pop1 (state) {
     state['pop1_params'] = state['pop0_params']
   } else {
     state['pop1_params'] = {
-      'pcr': inputs['pcr'].value,
+      'pcr': inputs['pcr'].checked,
       'nmolecules': parseFloat(inputs['nmolecules'].value),
       'expression': parseFloat(inputs['expression'].value),
       'samples': parseFloat(inputs['samples'].value),
