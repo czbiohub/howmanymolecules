@@ -136,12 +136,12 @@ function controls (opts) {
 
   var state = {
     'shared_params': {
-    'pcr': inputs['pcr'].value,
     'historylim': inputs['historylim'].value,
     'showtrue': inputs['showtrue'].value,
     'comparepops': inputs['comparepops'].value,
   },
   'pop0_params': {
+    'pcr': inputs['pcr'].value,
     'nmolecules': parseFloat(inputs['nmolecules'].value),
     'expression': parseFloat(inputs['expression'].value),
     'samples': parseFloat(inputs['samples'].value),
@@ -154,6 +154,7 @@ function setup_pop1 (state) {
     state['pop1_params'] = state['pop0_params']
   } else {
     state['pop1_params'] = {
+      'pcr': inputs['pcr'].value,
       'nmolecules': parseFloat(inputs['nmolecules'].value),
       'expression': parseFloat(inputs['expression'].value),
       'samples': parseFloat(inputs['samples'].value),
@@ -166,7 +167,8 @@ function setup_pop1 (state) {
   generate_true_counts(state)
 
   inputs['pcr'].oninput = function (e) {
-    state['shared_params']['pcr'] = e.target.checked
+    state['pop0_params']['pcr'] = e.target.checked
+    state['pop1_params']['pcr'] = e.target.checked
   }
   inputs['showtrue'].oninput = function (e) {
     state['shared_params']['showtrue'] = e.target.checked
