@@ -85,7 +85,7 @@ function simulation (controls) {
     // simulate four cells
     var sim = [generate(controls.state['pop0_params']), generate(controls.state['pop0_params']), generate(controls.state['pop1_params']), generate(controls.state['pop1_params'])]
 
-    if (controls.state['shared_params']['historylim']) {
+    if (!controls.state['shared_params']['accumulate_history']) {
       var history = [50, 250]
     } else {
       var history = [1500, 1500]

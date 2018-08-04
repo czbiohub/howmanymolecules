@@ -66,7 +66,7 @@ function controls (opts) {
     }
 
     values[name] = document.createElement('div')
-    values[name].innerHTML = inputs[name].value
+    if (type == 'range') {values[name].innerHTML = inputs[name].value}
     group[name].appendChild(values[name])
   }
 
@@ -74,7 +74,7 @@ function controls (opts) {
   make('expression', 'Expression level', 'range', {min: 0, max: 1, value: .2, step: .01})
   make('samples', 'Sampling depth', 'range', {min: 0, max: 1, value: 0.7, step: 0.01})
   make('pcr', 'Amplify?', 'checkbox', {value: true})
-  make('historylim', 'Accumulate all samples?', 'checkbox', {value: true})
+  make('accumulate_history', 'Accumulate all samples?', 'checkbox', {value: false})
   make('showtrue', 'Show true distribution?', 'checkbox', {value: false})
   make('comparepops', 'Compare two populations?', 'checkbox', {value: true})
 
@@ -136,7 +136,7 @@ function controls (opts) {
 
   var state = {
     'shared_params': {
-    'historylim': inputs['historylim'].value,
+    'accumulate_history': inputs['accumulate_history'].value,
     'showtrue': inputs['showtrue'].value,
     'comparepops': inputs['comparepops'].value,
   },
@@ -188,8 +188,8 @@ function setup_pop1 (state) {
     values['samples'].innerHTML = state['pop0_params']['samples']
     generate_true_counts(state)
   }
-  inputs['historylim'].oninput = function (e) {
-    state['shared_params']['historylim'] = e.target.checked
+  inputs['accumulate_history'].oninput = function (e) {
+    state['shared_params']['accumulate_history'] = e.target.checked
   }
   inputs['comparepops'].oninput = function (e) {
     self.emit('clear', true)
