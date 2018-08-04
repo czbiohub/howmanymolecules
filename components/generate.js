@@ -25,7 +25,7 @@ function generate (params) {
     var e = prob.poisson(u)()
     if (e >= n) e = (n - 1)
     var data = []
-    for (i = 0; i < n; i++) { 
+    for (i = 0; i < n; i++) {
       var r = 0.8 * Math.sqrt(rand())
       var t = rand() * 2 * Math.PI
       var x = r * Math.cos(t)
@@ -75,7 +75,7 @@ function generate (params) {
   // ignoring those removed during sampling
   function four (init) {
     var filtered = _.filter(init, function (d) {return d[5] == 1})
-    var counts = _.countBy(filtered, function (d) {return d[2]}) 
+    var counts = _.countBy(filtered, function (d) {return d[2]})
     counts[0] = counts[0] || 0
     counts[1] = counts[1] || 0
     return counts
@@ -84,35 +84,61 @@ function generate (params) {
   // stage five
   // determine normalized positions in a count "bucket"
   // by iterating over elements and stacking vertically
+
+  // normalize counts
   function five (init, counts) {
-    
+
+    // the elements are stacked in an overlapping fashion, with offset
+    // the 5% of the radius of the circle, or, if that would overflow,
+    // a height such that they would fill 80%
+    // of the height of the circle. Circles have a radius of 100 and the pills
+    // have a height of 15, so 0.05 overlap is 5 pix, ie, 1/3 of a pill.
     var w = Math.min(((counts[1] > counts[0]) ? (2 / counts[1]) : (2 / counts[0])) * 0.8, 0.05)
     var dy0 = -0.75 // initial vertical position
     var dy1 = -0.75 // initial vertical position
-    for (i = 0; i < init.length; i++) { 
+
+
+
+    for (i = 0; i < init.length; i++) {
       if (init[i][2]) {
-        init[i][7] = 0.25
-        init[i][8] = dy1
-        init[i][9] = counts[1]
+        init[i][7] = 0.25 // x location of gene stack
+        init[i][8] = dy1 // y location of pill
+        init[i][9] = normalize(counts) // count for histogram for gene stack
         if (init[i][5] == 1) dy1 += w // increment if sampled
       } else {
-        init[i][7] = -0.25
-        init[i][8] = dy0
-        init[i][9] = counts[0]
+        init[i][7] = -0.25 // x location of other stack
+        init[i][8] = dy0 // y location of pill
+        init[i][9] = counts[0] // count for histogram for other stack
         if (init[i][5] == 1) dy0 += w // increment if sampled
       }
     }
     return init
   }
 
+  function normalize(counts){
+    count = counts[1]
+    norm = counts[1]/(counts[0] + counts[1]) * 100 // counts per hundred
+    lognorm = Math.log10(1 + norm)*10
+    if (params.log){
+      return lognorm
+    }
+    else if (params.norm) {
+      return norm
+    }
+    else {
+      return count
+    }
+  }
+
   // cascade a full run of the simulation
-  // return the final data array and the total gene count
+  // return the final data array and the (normalized) gene count
   data = one()
   data = two(data)
   data = three(data)
   counts = four(data)
   data = five(data, counts)
-  return {data: data, count: counts[1]}
+  count = normalize(counts)
+  return {data: data, count: count}
 }
 
 module.exports = generate

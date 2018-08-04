@@ -60,7 +60,15 @@ function controls (opts) {
       inputs[name].checked = params.value
       group[name].appendChild(inputs[name])
     }
-    
+
+    if (type == 'radio') {
+      inputs[name] = document.createElement('input')
+      inputs[name].type = 'radio'
+      inputs[name].value = params.value
+      inputs[name].checked = params.value
+      group[name].appendChild(inputs[name])
+    }
+
     values[name] = document.createElement('div')
     values[name].innerHTML = inputs[name].value
     group[name].appendChild(values[name])
@@ -68,10 +76,11 @@ function controls (opts) {
 
   make('molecules', 'range', {min: 0, max: 100, value: 50, step: 1})
   make('expression', 'range', {min: 0, max: 100, value: 10, step: 1})
-  make('samples', 'range', {min: 0, max: 1, value: 0.7, step: 0.01})
+  make('samples', 'range', {min: 0, max: 1, value: 0.2, step: 0.01})
   make('pcr', 'checkbox', {value: true})
+  make('norm', 'checkbox', {value: false})
+  make('log', 'checkbox', {value: false})
 
-  
   var play1x = document.createElement('button')
   play1x.innerHTML = 'play 1x'
   box.appendChild(play1x)
@@ -97,10 +106,18 @@ function controls (opts) {
     'molecules': parseFloat(inputs['molecules'].value),
     'expression': parseFloat(inputs['expression'].value),
     'samples': parseFloat(inputs['samples'].value),
+    'norm': inputs['norm'].value,
+    'log': inputs['log'].value
   }
 
   inputs['pcr'].oninput = function (e) {
     state['pcr'] = e.target.checked
+  }
+  inputs['norm'].oninput = function (e) {
+    state['norm'] = e.target.checked
+  }
+  inputs['log'].oninput = function (e) {
+    state['log'] = e.target.checked
   }
   inputs['molecules'].oninput = function (e) {
     state['molecules'] = parseFloat(e.target.value)

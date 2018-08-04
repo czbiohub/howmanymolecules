@@ -23,8 +23,8 @@ function animate (svg, data, coords, histogram, duration, color, index) {
       .style('opacity', 0.75)
     .transition() //appear in first circle
       .duration(duration * 0.2)
-      .attr('width', 40)
-      .attr('height', 15)
+      .attr('width', 40) // width of each pill is 40
+      .attr('height', 15) // height of each pill is 15
       .attr('transform', 'translate(-10,-4)')
     .transition() //slide down to second circle
       .duration(duration * 0.2)
@@ -37,7 +37,7 @@ function animate (svg, data, coords, histogram, duration, color, index) {
      //  .attr('transform', function (d) {return (d[5] ? 'translate(-10,-4)' : 'translate(10,4)')})
     .transition() //duplicate for pcr
       .duration(duration * 0.1)
-      .attr('transform', function (d) {return (d[6] & d[5] ? 'translate(-5,-9)' : 'translate(-10,-4)')})
+      .attr('transform', function (d) {return (d[6] & d[5] ? 'translate(-3,-20)' : 'translate(-10,-4)')})
     .transition() //turn into counts/bars
       .duration(duration * 0.15)
       .attr('x', function (d) {return d[5] ? coords.sample.x(d[7]) : coords.cell.x(d[0])})

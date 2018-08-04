@@ -26,14 +26,14 @@ function simulation (controls) {
   setup(svg, coords[1], 'cell')
   setup(svg, coords[2], 'cell')
   setup(svg, coords[3], 'cell')
-  setup(svg, coords['histogram'], 'histogram')
+  setup(svg, coords['histogram_norm'], 'histogram')
 
   var id, counts1, counts2, hist1, hist2
 
   var history = [100, 500] // history for histogram ticks [0] and kde [1]
 
   controls.on('play', function (e) {
-    if (e == '1x') play(3000, true)
+    if (e == '1x') play(10000, true)
     if (e == '3x') play(1000, true)
     if (e == '10x') play(300, false)
     if (e == '100x') play(30, false)
@@ -66,17 +66,18 @@ function simulation (controls) {
 
   function once (duration, display) {
 
-    // simulate three cells
+    // simulate four cells
     var sim = [generate(controls.state), generate(controls.state), generate(controls.state), generate(controls.state)]
 
-    // animate three cells
-    if (display) {
-      animate(svg, sim[0], coords[0], coords['histogram'], duration, '#F768A1', 0)
-      animate(svg, sim[1], coords[1], coords['histogram'], duration, '#F768A1', 1)
-      animate(svg, sim[2], coords[2], coords['histogram'], duration, '#B191DB', 2)
-      animate(svg, sim[3], coords[3], coords['histogram'], duration, '#B191DB', 3)
-    }
+    coords_histogram = controls.state.log ? coords['histogram_log'] : (controls.state.norm ? coords['histogram_norm'] : coords['histogram_count'])
 
+    // animate four cells
+    if (display) {
+      animate(svg, sim[0], coords[0], coords_histogram, duration, '#F768A1', 0)
+      animate(svg, sim[1], coords[1], coords_histogram, duration, '#F768A1', 1)
+      animate(svg, sim[2], coords[2], coords_histogram, duration, '#B191DB', 2)
+      animate(svg, sim[3], coords[3], coords_histogram, duration, '#B191DB', 3)
+    }
     // store the total cell counts
     counts1.push(sim[0].count)
     counts1.push(sim[1].count)
@@ -84,9 +85,9 @@ function simulation (controls) {
     counts2.push(sim[3].count)
 
     // render the histogram
-    hist1 = histogram(svg, counts1, coords['histogram'], duration, history, '#F768A1', 0)
+    hist1 = histogram(svg, counts1, coords_histogram, duration, history, '#F768A1', 0)
     // demo2 = histogram(svg, random_array_demo2,)
-    hist2 = histogram(svg, counts2, coords['histogram'], duration, history, '#B191DB', 1)
+    hist2 = histogram(svg, counts2, coords_histogram, duration, history, '#B191DB', 1)
   }
 }
 

@@ -85,9 +85,31 @@ coordinates[3].sample = {
 
 // histogram
 
-coordinates['histogram'] = {
+coordinates['histogram_count'] = {
   x: d3.scaleLinear()
     .domain([0, 60])
+    .range([50, 975])
+    .clamp(true),
+  y: d3.scaleLinear()
+    .domain([0, 0.1])
+    .range([700, 550])
+    .clamp(true)
+}
+
+coordinates['histogram_norm'] = {
+  x: d3.scaleLinear()
+    .domain([0, 100])
+    .range([50, 975])
+    .clamp(true),
+  y: d3.scaleLinear()
+    .domain([0, 0.1])
+    .range([700, 550])
+    .clamp(true)
+}
+
+coordinates['histogram_log'] = {
+  x: d3.scaleLinear()
+    .domain([0, 20])
     .range([50, 975])
     .clamp(true),
   y: d3.scaleLinear()
