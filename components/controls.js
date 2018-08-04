@@ -86,10 +86,6 @@ function controls (opts) {
   play3x.innerHTML = 'play 3x'
   box.appendChild(play3x)
 
-  var play10x = document.createElement('button')
-  play10x.innerHTML = 'play 10x'
-  box.appendChild(play10x)
-
   var play100x = document.createElement('button')
   play100x.innerHTML = 'play 100x'
   box.appendChild(play100x)
@@ -202,9 +198,6 @@ function setup_pop1 (state) {
   }
   play3x.onclick = function (e) {
     self.emit('play', '3x')
-  }
-  play10x.onclick = function (e) {
-    self.emit('play', '10x')
   }
   play100x.onclick = function (e) {
     self.emit('play', '100x')

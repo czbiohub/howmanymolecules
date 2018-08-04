@@ -28,55 +28,64 @@ function simulation (controls) {
   setup(svg, coords[3], 'cell')
   setup(svg, coords['histogram'], 'histogram')
 
-  var id, counts0, counts1, hist0, hist1, true_hist0, true_hist1
+  var id, hist0, hist1, true_hist0, true_hist1
+  var counts0 = []
+  var counts1 = []
 
   controls.on('play', function (e) {
-    if (e == '1x') play(3000, true)
-    if (e == '3x') play(1000, true)
-    if (e == '10x') play(300, false)
-    if (e == '100x') play(30, false)
+    if (e == '1x') play(4500, 1, true)
+    if (e == '3x') play(1500, 3, true)
+    if (e == '100x') play(45, 100, false)
   })
 
   controls.on('clear', function (e) {
     clear()
   })
 
-  function play (duration, display) {
-    clear()
-    once(duration, display) // run one loop
-    id = setInterval(function () { // setup loops
-      once(duration, display)
-    }, duration)
+  function play (duration, N, display) {
+    for (n in _.range(0,N)) {
+      setTimeout(once, n*duration, duration, display)
+      setTimeout(clear_pills, n*duration+duration)
+    }
   }
 
+function clear_pills() {
+  _.forEach([0, 1, 2, 3], function (d) {svg.selectAll('.pill' + d).remove()}) // clear all molecules
+}
+
+function clear_true_distrib() {
+  if (true_hist0) {
+    clearTimeout(true_hist0)
+    svg.selectAll('.path'+2).remove()
+  }
+  if (true_hist1) {
+    clearTimeout(true_hist1)
+    svg.selectAll('.path'+2).remove()
+  }
+}
+
+function clear_sample_distrib() {
+
+  counts0 = [] // reset count vector
+  counts1 = []
+
+  svg.selectAll('.count' + 0).remove() // clear all histogram ticks
+  svg.selectAll('.count' + 1).remove()
+  svg.selectAll('.path' + 0).remove() // clear the path
+  svg.selectAll('.path' + 1).remove()
+  _.forEach([0, 1, 2, 3], function (d) {svg.selectAll('.sample' + d).remove()}) // clear all molecules
+
+}
+
   function clear () {
-    counts0 = [] // reset count vector
-    counts1 = []
-
-    if (id) clearInterval(id)  // clear current loop
-    if (hist0) clearTimeout(hist0)  // clear current loop
-    if (hist1) clearTimeout(hist1)
-    if (true_hist0) {
-      clearTimeout(true_hist0)
-      svg.selectAll('.path' + 2).remove()
-    }
-    if (true_hist1) {
-      clearTimeout(true_hist1)
-      svg.selectAll('.path'+3).remove()
-    }
-
-    svg.selectAll('.count' + 0).remove() // clear all histogram ticks
-    svg.selectAll('.count' + 1).remove()
-    svg.selectAll('.path' + 0).remove() // clear the path
-    svg.selectAll('.path' + 1).remove()
-    _.forEach([0, 1, 2, 3], function (d) {svg.selectAll('.pill' + d).remove()}) // clear all molecules
+  clear_pills()
+  clear_true_distrib()
+  clear_sample_distrib()
   }
 
   function once (duration, display) {
-
     if (controls.state['shared_params']['showtrue'] == true) {
       true_hist0 = histogram(svg, controls.state['pop0_params']['true_counts'], coords['histogram'], duration, [0, 1000], '#646464', 2)
-
       if (controls.state['shared_params']['comparepops'] == true) {
         true_hist1 = histogram(svg, controls.state['pop1_params']['true_counts'], coords['histogram'], duration, [0, 1000], '#646464', 3)
       }
