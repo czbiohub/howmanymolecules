@@ -98,8 +98,17 @@ function controls (opts) {
   clear.innerHTML = 'clear'
   box.appendChild(clear)
 
+  function naive_copy_obj (obj) {
+    var new_obj = {}
+    for (key in obj) {
+      new_obj[key] = obj[key]
+    }
+    return new_obj
+  }
+
+
   function generate_true_counts(state) {
-      var true_pop0_params = state['pop0_params']
+      var true_pop0_params = naive_copy_obj(state['pop0_params'])
       true_pop0_params['samples'] = 1.0
       true_pop0_params['pcr'] = false
 
@@ -113,7 +122,7 @@ function controls (opts) {
       if ( state['shared_params']['comparepops'] == false ) {
         state['pop1_params']['true_counts'] = true_pop0_counts
       } else {
-        var true_pop1_params = state['pop1_params']
+        var true_pop1_params = naive_copy_obj(state['pop1_params'])
         true_pop1_params['samples'] = 1.0
         true_pop1_params['pcr'] = false
         true_pop1_counts = []
