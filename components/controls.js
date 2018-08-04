@@ -8,6 +8,7 @@ var generate = require('./generate')
 inherits(controls, EventEmitter)
 
 function controls (opts) {
+  // console.log(opts)
   if (!(this instanceof controls)) return new controls(opts)
 
   var self = this
@@ -75,7 +76,7 @@ function controls (opts) {
   make('pcr', 'checkbox', {value: true})
   make('historylim', 'checkbox', {value: true})
   make('showtrue', 'checkbox', {value: false})
-  make('comparepops', 'checkbox', {value: false})
+  make('comparepops', 'checkbox', {value: true})
 
   var play1x = document.createElement('button')
   play1x.innerHTML = 'play 1x'
@@ -139,17 +140,20 @@ function controls (opts) {
   },
 }
 
-if (!state['comparepops']) {
-  state['pop1_params'] = state['pop0_params']
-} else {
-  state['pop1_params'] = {
-    'nmolecules': parseFloat(inputs['nmolecules'].value),
-    'expression': parseFloat(inputs['expression'].value),
-    'samples': parseFloat(inputs['samples'].value),
-    'color': '#B191DB',
+function setup_pop1 (state) {
+  if (state['shared_params']['comparepops'] == false) {
+    state['pop1_params'] = state['pop0_params']
+  } else {
+    state['pop1_params'] = {
+      'nmolecules': parseFloat(inputs['nmolecules'].value),
+      'expression': parseFloat(inputs['expression'].value),
+      'samples': parseFloat(inputs['samples'].value),
+      'color': '#B191DB',
+    }
   }
 }
 
+  setup_pop1(state)
   generate_true_counts(state)
 
   inputs['pcr'].oninput = function (e) {
@@ -175,6 +179,11 @@ if (!state['comparepops']) {
   }
   inputs['historylim'].oninput = function (e) {
     state['shared_params']['historylim'] = e.target.checked
+  }
+  inputs['comparepops'].oninput = function (e) {
+    self.emit('clear', true)
+    state['shared_params']['comparepops'] = e.target.checked
+    setup_pop1(state)
   }
 
   play1x.onclick = function (e) {

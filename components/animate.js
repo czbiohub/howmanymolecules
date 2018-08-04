@@ -57,7 +57,7 @@ function animate (svg, data, coords, histogram, duration, color, index) {
       .attr('height', function (d) {return d[5] ? 20 : 15})
       .attr('rx', 10)
       .attr('ry', 10)
-      .on('end', console.log('all done'))
+      // .on('end', console.log('all done'))
 }
 
 module.exports = animate

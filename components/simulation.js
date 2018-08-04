@@ -74,8 +74,6 @@ function simulation (controls) {
 
   function once (duration, display) {
 
-    console.log(controls.state['shared_params'])
-
     if (controls.state['shared_params']['showtrue'] == true) {
       true_hist0 = histogram(svg, controls.state['pop0_params']['true_counts'], coords['histogram'], duration, [0, 1000], '#646464', 2)
 
