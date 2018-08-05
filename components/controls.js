@@ -116,14 +116,17 @@ function controls (opts) {
   var play1x = document.createElement('button')
   play1x.innerHTML = 'play 1x'
   shared_ctrls['box'].appendChild(play1x)
+  shared_ctrls['inputs']['play1x'] = play1x
 
   var play3x = document.createElement('button')
   play3x.innerHTML = 'play 3x'
   shared_ctrls['box'].appendChild(play3x)
+  shared_ctrls['inputs']['play3x'] = play3x
 
   var play100x = document.createElement('button')
   play100x.innerHTML = 'play 100x'
   shared_ctrls['box'].appendChild(play100x)
+  shared_ctrls['inputs']['play100x'] = play100x
 
   var clear = document.createElement('button')
   clear.innerHTML = 'clear'
@@ -284,7 +287,9 @@ function setup_pop1 (state) {
   opts.root.appendChild(pop1_ctrls['box'])
   opts.root.appendChild(shared_ctrls['box'])
   self.state = state
-  // self.box = pop0_ctrls['box']
+  self.shared_ctrls = shared_ctrls
+  self.pop0_ctrls = pop0_ctrls
+  self.pop1_ctrls = pop1_ctrls
 }
 
 module.exports = controls
