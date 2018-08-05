@@ -133,6 +133,7 @@ function controls (opts) {
   var clear = document.createElement('button')
   clear.innerHTML = 'clear'
   shared_ctrls['box'].appendChild(clear)
+  shared_ctrls['inputs']['clear'] = clear
 
   function naive_copy_obj (obj) {
     var new_obj = {}
