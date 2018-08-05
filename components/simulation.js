@@ -47,6 +47,17 @@ function simulation (controls) {
   })
 
   function play (duration, N, display) {
+
+    var play_buttons = [controls.shared_ctrls['inputs']['play3x'], controls.shared_ctrls['inputs']['play1x'], controls.shared_ctrls['inputs']['play100x']]
+    console.log(controls.shared_ctrls)
+    console.log(play_buttons)
+    var total_time = N*duration
+
+    _.forEach(play_buttons, function (d) {d.disabled = true})
+    function reenable(buttons) {
+      _.forEach(buttons, function (d) {d.disabled = false})
+    }
+    setTimeout(reenable, total_time, play_buttons)
     for (n in _.range(0,N)) {
       setTimeout(once, n*duration, duration, display)
       setTimeout(clear_pills, n*duration+duration)
