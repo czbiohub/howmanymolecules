@@ -210,6 +210,7 @@ function setup_pop1 (state) {
   }
   shared_ctrls['inputs']['showtrue'].oninput = function (e) {
     state['shared_params']['showtrue'] = e.target.checked
+    self.emit('showtrue', e.target.checked)
   }
   shared_ctrls['inputs']['accumulate_history'].oninput = function (e) {
     state['shared_params']['accumulate_history'] = e.target.checked

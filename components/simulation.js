@@ -46,6 +46,15 @@ function simulation (controls) {
     set_histogram()
   })
 
+  controls.on('showtrue', function (e) {
+    if (e == true) {
+      add_true_distribution()
+    }
+    else {
+      clear_true_distrib()
+    }
+  })
+
   function play (duration, N, display) {
 
     var play_buttons = [controls.shared_ctrls['inputs']['play3x'], controls.shared_ctrls['inputs']['play1x'], controls.shared_ctrls['inputs']['play100x']]
@@ -93,37 +102,37 @@ function simulation (controls) {
   }
 
   function clear () {
-  clear_pills()
-  clear_true_distrib()
-  clear_sample_distrib()
-  }
+    clear_pills()
+    clear_true_distrib()
+    clear_sample_distrib()
+    }
+
+
+  function add_true_distribution() {
+    if (controls.state['shared_params']['showtrue'] == true) {
+      true_hist0 = histogram(svg, controls.state['pop0_params']['true_counts'], coords['histogram'], null, [0, 1000], '#646464', 2)
+      if (controls.state['shared_params']['comparepops'] == true) {
+        true_hist1 = histogram(svg, controls.state['pop1_params']['true_counts'], coords['histogram'], null, [0, 1000], '#646464', 3)
+        }
+      }
+    }
 
   //set histogram scale and ticks to match normalization method
   function set_histogram () {
     if (controls.state['shared_params']['log']) {
       coords['histogram'].x.domain([0, 80])
-      console.log('setting log scale')
     }
     else if (controls.state['shared_params']['normalize']) {
       coords['histogram'].x.domain([0, 100])
-      console.log('setting norm scale')
     }
     else {
       coords['histogram'].x.domain([0, 60])
-      console.log('setting to regular')
     }
 
     svg.selectAll('.axis-x').call(d3.axisBottom(coords['histogram'].x))
   }
 
   function once (duration, display) {
-    if (controls.state['shared_params']['showtrue'] == true) {
-      true_hist0 = histogram(svg, controls.state['pop0_params']['true_counts'], coords['histogram'], duration, [0, 1000], '#646464', 2)
-      if (controls.state['shared_params']['comparepops'] == true) {
-        true_hist1 = histogram(svg, controls.state['pop1_params']['true_counts'], coords['histogram'], duration, [0, 1000], '#646464', 3)
-      }
-    }
-
     // simulate four cells
     var sim = [generate(controls.state['shared_params'], controls.state['pop0_params']),
                generate(controls.state['shared_params'], controls.state['pop0_params']),
