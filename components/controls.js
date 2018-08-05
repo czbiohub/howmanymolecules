@@ -112,6 +112,8 @@ function controls (opts) {
   make_ctrl('accumulate_history', 'Accumulate all samples?', 'checkbox', {value: false}, shared_ctrls)
   make_ctrl('showtrue', 'Show true distribution?', 'checkbox', {value: false}, shared_ctrls)
   make_ctrl('comparepops', 'Compare two populations?', 'checkbox', {value: true}, shared_ctrls)
+  make_ctrl('normalize', 'Normalize to counts per 100?', 'checkbox', {value: false}, shared_ctrls)
+  make_ctrl('log', 'Log-normalize?', 'checkbox', {value: false}, shared_ctrls)
 
   var play1x = document.createElement('button')
   play1x.innerHTML = 'play 1x'
@@ -144,8 +146,8 @@ function controls (opts) {
       true_pop0_params['pcr'] = false
 
       true_pop0_counts = []
-      for (cell in _.range(0, 1000)) {
-        true_pop0_counts.push(generate(true_pop0_params).count)
+      for (cell in _.range(0, 10000)) {
+        true_pop0_counts.push(generate(state['shared_params'], true_pop0_params).count)
       }
 
       state['pop0_params']['true_counts'] = true_pop0_counts
@@ -158,7 +160,7 @@ function controls (opts) {
         true_pop1_params['pcr'] = false
         true_pop1_counts = []
         for (cell in _.range(0, 1000)) {
-          true_pop1_counts.push(generate(true_pop1_params).count)
+          true_pop1_counts.push(generate(state['shared_params'], true_pop1_params).count)
         }
         state['pop1_params']['true_counts'] = true_pop1_counts
       }
@@ -170,6 +172,8 @@ function controls (opts) {
     'accumulate_history': shared_ctrls['inputs']['accumulate_history'].checked,
     'showtrue': shared_ctrls['inputs']['showtrue'].checked,
     'comparepops': shared_ctrls['inputs']['comparepops'].checked,
+    'normalize': shared_ctrls['inputs']['normalize'].checked,
+    'log': shared_ctrls['inputs']['log'].checked
   },
   'pop0_params': {
     'pcr': shared_ctrls['inputs']['pcr'].checked,
@@ -230,7 +234,18 @@ function setup_pop1 (state) {
 
     }
 
-
+  shared_ctrls['inputs']['normalize'].oninput = function (e) {
+    self.emit('clear', true)
+    state['shared_params']['normalize'] = e.target.checked
+    self.emit('set_histogram', true)
+    generate_true_counts(state)
+  }
+  shared_ctrls['inputs']['log'].oninput = function (e) {
+    self.emit('clear', true)
+    state['shared_params']['log'] = e.target.checked
+    self.emit('set_histogram', true)
+    generate_true_counts(state)
+  }
 
   pop0_ctrls['inputs']['nmolecules'].oninput = function (e) {
     state['pop0_params']['nmolecules'] = parseFloat(e.target.value)
@@ -264,8 +279,6 @@ function setup_pop1 (state) {
     pop1_ctrls['values']['samples'].innerHTML = state['pop1_params']['samples']
     generate_true_counts(state)
   }
-
-
 
   play1x.onclick = function (e) {
     self.emit('play', '1x')

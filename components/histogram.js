@@ -18,10 +18,10 @@ function histogram (svg, counts, coords, duration, history, color, index) {
     .attr('cy', function (d) {return coords.y(0.01)})
     .attr('transform', 'translate(0,5)')
     .style('fill', color)
-    .style('opacity', 0.5)
+    .style('opacity', 0.75)
   .transition()
     .delay(duration - duration * 0.1)
-    .attr('r', 12)
+    .attr('r', 10)
 
   var count = svg.selectAll('.count'+index)
     .data(_.takeRight(currentCounts, history[0] - 1), function (d) {return d.name})

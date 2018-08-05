@@ -11,7 +11,7 @@ var prob = require('prob.js')
 // sample -> is it sampled (1) or dropped (0)
 // copy -> is it a copy (1) or original (0)
 
-function generate (params) {
+function generate (shared_params, params) {
   var data
 
   // stage one
@@ -47,6 +47,12 @@ function generate (params) {
       var sample = (rand() < params.samples) ? 1 : 0
       return _.concat(d, [d[0], d[1], sample])
     })
+
+    // make sure to sample at least one molecule
+    if (_.sum(data.map(function (d) {return d[5]})) == 0){
+      data[0][5] = 1
+    }
+
     return data
   }
 
@@ -81,6 +87,21 @@ function generate (params) {
     return counts
   }
 
+  function normalize (counts) {
+    norm = counts[1]/(counts[0] + counts[1]) * 100
+    lognorm = Math.log10(1 + norm) * 40
+
+    if (shared_params['log']) {
+      return lognorm
+    }
+    else if (shared_params['normalize']){
+      return norm
+    }
+    else {
+      return counts[1]
+    }
+  }
+
   // stage five
   // determine normalized positions in a count "bucket"
   // by iterating over elements and stacking vertically
@@ -93,12 +114,12 @@ function generate (params) {
       if (init[i][2]) {
         init[i][7] = 0.25
         init[i][8] = dy1
-        init[i][9] = counts[1]
+        init[i][9] = normalize(counts)
         if (init[i][5] == 1) dy1 += w // increment if sampled
       } else {
         init[i][7] = -0.25
         init[i][8] = dy0
-        init[i][9] = counts[0]
+        init[i][9] = 0
         if (init[i][5] == 1) dy0 += w // increment if sampled
       }
     }
@@ -112,7 +133,7 @@ function generate (params) {
   data = amplify(data)
   counts = count(data)
   data = stack(data, counts)
-  return {data: data, count: counts[1]}
+  return {data: data, count: normalize(counts)}
 }
 
 module.exports = generate

@@ -1,7 +1,7 @@
 function animate (svg, data, coords, histogram, duration, color, index) {
 
   // primary animation loop for molecules
-
+  duration = duration/1.1
   // var duration = 4
   var pill = svg.selectAll('.pill' + index).remove()
 
@@ -45,9 +45,11 @@ function animate (svg, data, coords, histogram, duration, color, index) {
       .style('opacity', function (d) {return d[5] ? 1 : 0.75})
       .attr('transform', 'translate(-10,-4)')
       .style('stroke', 'none')
+    .transition() //normalize
+      .duration(duration * 0.1)
     .transition() //remove the gray count bar
       .duration(duration * 0.1)
-      .style('opacity', function (d) {return ((d[5]) & (d[2] == 0)) ? 0 : 1})//0.75})
+      .style('opacity', function (d) {return ((d[5]) & (d[2] == 1)) ? 1 : 0})
     .transition() //move the colored bar to the histogram
       .duration(duration * 0.15)
       .attr('class', function (d) {return d[5] ? 'sample'+index : 'pill'+index})
@@ -55,7 +57,7 @@ function animate (svg, data, coords, histogram, duration, color, index) {
       .attr('y', function (d) {return d[5] ? histogram.y(0.01) : coords.cell.y(d[1])})
       .attr('width', function (d) {return d[5] ? 20 : 40})
       .attr('height', function (d) {return d[5] ? 20 : 15})
-      .style('opacity', function (d) {return ((d[5]) & (d[2] == 0)) ? 0 : 0.75})
+      .style('opacity', function (d) {return ((d[5]) & (d[2] == 1)) ? 0.375 : 0})
       .attr('rx', 10)
       .attr('ry', 10)
       // .on('end', console.log('all done'))

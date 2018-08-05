@@ -42,6 +42,10 @@ function simulation (controls) {
     clear()
   })
 
+  controls.on('set_histogram', function (e) {
+    set_histogram()
+  })
+
   function play (duration, N, display) {
     for (n in _.range(0,N)) {
       setTimeout(once, n*duration, duration, display)
@@ -49,38 +53,56 @@ function simulation (controls) {
     }
   }
 
-function clear_pills() {
-  _.forEach([0, 1, 2, 3], function (d) {svg.selectAll('.pill' + d).remove()}) // clear all molecules
-}
-
-function clear_true_distrib() {
-  if (true_hist0) {
-    clearTimeout(true_hist0)
-    svg.selectAll('.path'+2).remove()
+  function clear_pills() {
+    _.forEach([0, 1, 2, 3], function (d) {svg.selectAll('.pill' + d).remove()}) // clear all molecules
   }
-  if (true_hist1) {
-    clearTimeout(true_hist1)
-    svg.selectAll('.path'+3).remove()
+
+  function clear_true_distrib() {
+    if (true_hist0) {
+      clearTimeout(true_hist0)
+      svg.selectAll('.path'+2).remove()
+    }
+    if (true_hist1) {
+      clearTimeout(true_hist1)
+      svg.selectAll('.path'+3).remove()
+    }
   }
-}
 
-function clear_sample_distrib() {
+  function clear_sample_distrib() {
 
-  counts0 = [] // reset count vector
-  counts1 = []
+    counts0 = [] // reset count vector
+    counts1 = []
 
-  svg.selectAll('.count' + 0).remove() // clear all histogram ticks
-  svg.selectAll('.count' + 1).remove()
-  svg.selectAll('.path' + 0).remove() // clear the path
-  svg.selectAll('.path' + 1).remove()
-  _.forEach([0, 1, 2, 3], function (d) {svg.selectAll('.sample' + d).remove()}) // clear all molecules
+    svg.selectAll('.count' + 0).remove() // clear all histogram ticks
+    svg.selectAll('.count' + 1).remove()
+    svg.selectAll('.path' + 0).remove() // clear the path
+    svg.selectAll('.path' + 1).remove()
+    _.forEach([0, 1, 2, 3], function (d) {svg.selectAll('.sample' + d).remove()}) // clear all molecules
 
-}
+  }
 
   function clear () {
   clear_pills()
   clear_true_distrib()
   clear_sample_distrib()
+  }
+
+  //set histogram scale and ticks to match normalization method
+  function set_histogram () {
+    if (controls.state['shared_params']['log']) {
+      coords['histogram'].x.domain([0, 80])
+      console.log('setting log scale')
+    }
+    else if (controls.state['shared_params']['normalize']) {
+      coords['histogram'].x.domain([0, 100])
+      console.log('setting norm scale')
+    }
+    else {
+      coords['histogram'].x.domain([0, 60])
+      console.log('setting to regular')
+    }
+
+    svg.selectAll('.axis-x').call(d3.axisBottom(coords['histogram'].x))
   }
 
   function once (duration, display) {
@@ -92,7 +114,10 @@ function clear_sample_distrib() {
     }
 
     // simulate four cells
-    var sim = [generate(controls.state['pop0_params']), generate(controls.state['pop0_params']), generate(controls.state['pop1_params']), generate(controls.state['pop1_params'])]
+    var sim = [generate(controls.state['shared_params'], controls.state['pop0_params']),
+               generate(controls.state['shared_params'], controls.state['pop0_params']),
+               generate(controls.state['shared_params'], controls.state['pop1_params']),
+               generate(controls.state['shared_params'], controls.state['pop1_params'])]
 
     if (!controls.state['shared_params']['accumulate_history']) {
       var history = [50, 250]
@@ -122,7 +147,6 @@ function clear_sample_distrib() {
     }
     hist0 = histogram(svg, counts0, coords['histogram'], duration, history, controls.state['pop0_params']['color'], 0)
     }
-
 }
 
 module.exports = simulation
