@@ -28,10 +28,11 @@ function controls (opts) {
     height: '215px',
     position: 'absolute',
     left: '0px',
-    top: '80px',
+    top: '100px',
     borderRight: 'solid 4px #F768A1',
     borderTop: 'solid 4px #F768A1',
-    borderBottom: 'solid 4px #F768A1'
+    borderBottom: 'solid 4px #F768A1',
+    padding: '0px 0px 0px 10px',
   }
 
   var pop1_ctrl_style = {
@@ -41,24 +42,25 @@ function controls (opts) {
     height: '30%',
     position: 'absolute',
     right: '0px',
-    top: '80px',
+    top: '100px',
     borderLeft: 'solid 4px #B191DB',
     borderTop: 'solid 4px #B191DB',
     borderBottom: 'solid 4px #B191DB',
+    padding: '0px 7px 0px 3px'
   }
 
   var shared_ctrl_style = {
     backgroundColor: '#FFFFFF',//rgb(200,200,200)',
     zIndex: '1000',
     width: '190px',
-    height: '350px',
+    height: '360px',
     position: 'absolute',
     left: '0px',
-    top: '315px',
+    top: '340px',
     borderRight: 'solid 4px #646464',
     borderBottom: 'solid 4px #646464',
     borderTop: 'solid 4px #646464',
-
+    padding: '0px 0px 0px 10px',
   }
 
   var play_ctrl_style = {
@@ -66,10 +68,12 @@ function controls (opts) {
     // opacity: '.7',
     zIndex: '1000',
     width: '190px',
+    padding: '0px 7px 0px 0px',
     height: '100px',
     position: 'absolute',
     right: '0px',
-    top: '315px',
+    top: '345px',
+    padding: '0px 10px 0px 0px'
     // borderLeft: 'solid 4px #646464',
     // borderBottom: 'solid 4px #646464',
     // borderTop: 'solid 4px #646464',
@@ -81,21 +85,22 @@ function controls (opts) {
   var play_ctrls = make_ctrlpanel(play_ctrl_style)
 
   var title = document.createElement('div')
-  title.innerHTML = 'howmany\nmolecules'
-  title.style['font-weight'] = 'bold'
-  title.style['font-size'] = '28px'
-  title.style['height'] = '80px'
-  title.style['width'] = '190px'
-  title['align-items'] = 'center'
-  opts.root.appendChild(title)
+    title.innerHTML = 'how many\nmolecules'
+    title.style['font-weight'] = 'bold'
+    title.style['font-size'] = '36px'
+    title.style['height'] = '80px'
+    title.style['width'] = '190px'
+    title.style['padding'] = '0px 10px 0px 0px'
+    title.style['align-items'] = 'center'
+    opts.root.appendChild(title)
 
   // shared_ctrls['box'].appendChild(title)
 
   function make_ctrl (name, label, type, params, ctrlpanel) {
     ctrlpanel['group'][name] = document.createElement('div')
     css(ctrlpanel['group'][name], {
-      marginBottom: '10px',
-      marginTop: '10px'
+      marginBottom: '15px',
+      marginTop: '5px',
     })
     ctrlpanel['box'].appendChild(ctrlpanel['group'][name])
     ctrlpanel['labels'][name] = document.createElement('div')
@@ -146,9 +151,9 @@ function controls (opts) {
     'text-align': 'center',
     'background-color': '#FFFFFF',
     'color': '#646464',
-    'padding': '0px, 25px',
-    'border-radius': '6px'
-
+    'padding': '0px, 30px',
+    'border-radius': '6px',
+    'border': '2px solid #646464',
   }
   var play1x = document.createElement('button')
   play1x.innerHTML = 'Play 1x'
