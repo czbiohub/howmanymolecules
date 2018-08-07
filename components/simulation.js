@@ -19,7 +19,7 @@ function simulation (controls) {
     .attr('height', height)
     .style('position', 'absolute')
     .style('left', '190px')
-    .style('top', '-25px')
+    .style('top', '-20px')
 
   // setup boxes and axes
   setup(svg, coords[0], 'cell')

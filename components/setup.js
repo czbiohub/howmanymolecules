@@ -30,7 +30,7 @@ function setup (svg, coords, layout) {
     svg.append('rect')
       .attr('width', 960)
       .attr('height', 175)
-      .attr('x', coords.x(0) - 15)
+      .attr('x', coords.x(0) - 27)
       .attr('y', coords.y(0.1))
       .style('fill', 'white')
       .style('stroke', 'rgb(100,100,100)')
