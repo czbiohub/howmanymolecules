@@ -94,6 +94,17 @@ function controls (opts) {
     title.style['align-items'] = 'center'
     opts.root.appendChild(title)
 
+  var about = document.createElement('div')
+    about.innerHTML='Questions? Suggestions? Find us on twitter: <a href=\'https://twitter.com/thebasepoint\'>Josh Batson</a>, <a href=\'https://twitter.com/sidneymbell\'>Sidney Bell</a>, <a href=\'https://twitter.com/thefreemanlab\'>Jeremy Freeman</a> <a href=\'https://www.github.com/czbiohub/howmanymolecules\'>& github</a>'
+    css(about, {'bottom': '-40px',
+    'left': '270px',
+    'padding': '0px 10px 10px 0px',
+    'width': '960px',
+    'position': 'absolute',
+    'font-style': 'italic',
+    'font-size': '12px',
+    'text-align': 'center'})
+
   // shared_ctrls['box'].appendChild(title)
 
   function make_ctrl (name, label, type, params, ctrlpanel) {
@@ -363,6 +374,7 @@ function controls (opts) {
   opts.root.appendChild(pop1_ctrls['box'])
   opts.root.appendChild(shared_ctrls['box'])
   opts.root.appendChild(play_ctrls['box'])
+  opts.root.appendChild(about)
 
   self.state = state
   self.shared_ctrls = shared_ctrls
