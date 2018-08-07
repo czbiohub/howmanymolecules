@@ -26,12 +26,13 @@ function controls (opts) {
     opacity: '.7',
     zIndex: '1000',
     width: '190px',
-    height: '30%',
+    height: '215px',
     position: 'absolute',
     left: '0px',
-    top: '0px',
+    top: '80px',
     borderRight: 'solid 4px #F768A1',
-    borderBottom: 'solid 4px #F768A1',
+    borderTop: 'solid 4px #F768A1',
+    borderBottom: 'solid 4px #F768A1'
   }
 
   var pop1_ctrl_style = {
@@ -42,9 +43,10 @@ function controls (opts) {
     height: '30%',
     position: 'absolute',
     right: '0px',
-    top: '0px',
+    top: '80px',
     borderLeft: 'solid 4px #B191DB',
-    borderBottom: 'solid 4px #B191DB'
+    borderTop: 'solid 4px #B191DB',
+    borderBottom: 'solid 4px #B191DB',
   }
 
   var shared_ctrl_style = {
@@ -52,13 +54,14 @@ function controls (opts) {
     opacity: '.7',
     zIndex: '1000',
     width: '190px',
-    height: '65%',
+    height: '400px',
     position: 'absolute',
     left: '0px',
-    bottom: '0px',
+    top: '315px',
     borderRight: 'solid 4px #646464',
+    borderBottom: 'solid 4px #646464',
     borderTop: 'solid 4px #646464',
-    borderBottom: 'solid 4px #646464'
+
   }
 
 
@@ -70,12 +73,12 @@ function controls (opts) {
   title.innerHTML = 'howmany\nmolecules'
   title.style['font-weight'] = 'bold'
   title.style['font-size'] = '28px'
-  title.style['height'] = '70px'
-  title.style['width'] = '175px'
+  title.style['height'] = '80px'
+  title.style['width'] = '190px'
   title['align-items'] = 'center'
+  opts.root.appendChild(title)
 
-
-  shared_ctrls['box'].appendChild(title)
+  // shared_ctrls['box'].appendChild(title)
 
   function make_ctrl (name, label, type, params, ctrlpanel) {
     ctrlpanel['group'][name] = document.createElement('div')
@@ -150,12 +153,12 @@ function controls (opts) {
   shared_ctrls['inputs']['walkthrough'] = walkthrough
   walkthrough.style['font-weight'] = 'bold'
 
-
   var clear = document.createElement('button')
   clear.innerHTML = 'Clear'
   shared_ctrls['box'].appendChild(clear)
   shared_ctrls['inputs']['clear'] = clear
   clear.style['font-weight'] = 'bold'
+
 
 
   function naive_copy_obj (obj) {
