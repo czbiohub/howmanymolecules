@@ -23,7 +23,6 @@ function controls (opts) {
 
   var pop0_ctrl_style = {
     backgroundColor: '#FFFFFF',//rgb(200,200,200)',
-    opacity: '.7',
     zIndex: '1000',
     width: '190px',
     height: '215px',
@@ -37,7 +36,6 @@ function controls (opts) {
 
   var pop1_ctrl_style = {
     backgroundColor: '#FFFFFF',//rgb(200,200,200)',
-    opacity: '.7',
     zIndex: '1000',
     width: '190px',
     height: '30%',
@@ -51,7 +49,6 @@ function controls (opts) {
 
   var shared_ctrl_style = {
     backgroundColor: '#FFFFFF',//rgb(200,200,200)',
-    opacity: '.7',
     zIndex: '1000',
     width: '190px',
     height: '350px',
