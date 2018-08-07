@@ -58,13 +58,13 @@ function simulation (controls) {
   function play (duration, N, display) {
 
     var play_buttons = [controls.play_ctrls['inputs']['play3x'], controls.play_ctrls['inputs']['play1x'], controls.play_ctrls['inputs']['play100x'], controls.play_ctrls['inputs']['clear']]
-    console.log(controls.play_ctrls)
-    console.log(play_buttons)
     var total_time = N*duration
 
     _.forEach(play_buttons, function (d) {d.disabled = true})
+    _.forEach(play_buttons, function (d) {d.style['opacity'] = 0.7})
     function reenable(buttons) {
       _.forEach(buttons, function (d) {d.disabled = false})
+      _.forEach(buttons, function (d) {d.style['opacity'] = 1})
     }
     setTimeout(reenable, total_time, play_buttons)
     for (n in _.range(0,N)) {
