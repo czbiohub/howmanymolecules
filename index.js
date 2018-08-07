@@ -4,6 +4,6 @@ var simulation = require('./components/simulation')
 
 simulation(controls)
 
-css(document.body, {
-	background : 'rgb(240,240,240)'
-})
+document.body.style['background'] = 'rgb(240,240,240)'
+document.body.style['font-family'] = 'Helvetica'
+document.body.style['font-weight'] = 'bold'
