@@ -4,9 +4,11 @@ var prob = require('prob.js')
 // generate underlying data for all stages of a simulation
 // we think of each molecule as a particle
 // data structure precomputes all neccessary information for each molecule
-// [x0, y0, label, x1, y1, sample, copy]
+// [x0, y0, label, x1, y1, sample, copy, x2, y2, count, ynormmin, ynormmin]
 // x0, y0 -> position in cell
 // x1, y1 -> position in sample space
+// x2, y2 -> position in stacked sample space
+// x3, y3 -> min and max for normed blocks
 // label -> gene identity (0 or 1)
 // sample -> is it sampled (1) or dropped (0)
 // copy -> is it a copy (1) or original (0)
@@ -108,9 +110,19 @@ function generate (shared_params, params) {
   function stack (init, counts) {
 
     var w = Math.min(((counts[1] > counts[0]) ? (2 / counts[1]) : (2 / counts[0])) * 0.8, 0.05)
+    var w_norm = 2/(counts[0] + counts[1]) * 0.8
     var dy0 = -0.75 // initial vertical position
     var dy1 = -0.75 // initial vertical position
+
     for (i = 0; i < init.length; i++) {
+      init[i][10] = -0.75
+      if(init[i][2]) {
+        init[i][11] = 2/(counts[0] + counts[1]) * 0.8 * counts[1]
+      }
+      else {
+        init[i][11] = 2/(counts[0] + counts[1]) * 0.8 * counts[0]
+      }
+
       if (init[i][2]) {
         init[i][7] = 0.25
         init[i][8] = dy1
