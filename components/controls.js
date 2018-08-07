@@ -54,7 +54,7 @@ function controls (opts) {
     opacity: '.7',
     zIndex: '1000',
     width: '190px',
-    height: '400px',
+    height: '350px',
     position: 'absolute',
     left: '0px',
     top: '315px',
@@ -64,10 +64,24 @@ function controls (opts) {
 
   }
 
+  var play_ctrl_style = {
+    // backgroundColor: '#FFFFFF',//rgb(200,200,200)',
+    // opacity: '.7',
+    zIndex: '1000',
+    width: '190px',
+    height: '100px',
+    position: 'absolute',
+    right: '0px',
+    top: '315px',
+    // borderLeft: 'solid 4px #646464',
+    // borderBottom: 'solid 4px #646464',
+    // borderTop: 'solid 4px #646464',
+  }
 
   var pop0_ctrls = make_ctrlpanel(pop0_ctrl_style)
   var pop1_ctrls = make_ctrlpanel(pop1_ctrl_style)
   var shared_ctrls = make_ctrlpanel(shared_ctrl_style)
+  var play_ctrls = make_ctrlpanel(play_ctrl_style)
 
   var title = document.createElement('div')
   title.innerHTML = 'howmany\nmolecules'
@@ -128,37 +142,52 @@ function controls (opts) {
   make_ctrl('accumulate_history', 'Accumulate all samples?', 'checkbox', {value: false}, shared_ctrls)
   make_ctrl('showtrue', 'Show true distribution?', 'checkbox', {value: false}, shared_ctrls)
 
+
+  button_style = {
+    'font-weight': 'bold',
+    'font-size': '20px',
+    'text-align': 'center',
+    'background-color': '#FFFFFF',
+    'color': '#646464',
+    'padding': '0px, 25px',
+    'border-radius': '6px'
+
+  }
   var play1x = document.createElement('button')
   play1x.innerHTML = 'Play 1x'
-  shared_ctrls['box'].appendChild(play1x)
-  shared_ctrls['inputs']['play1x'] = play1x
-  play1x.style['font-weight'] = 'bold'
+  css(play1x, button_style)
+  play_ctrls['box'].appendChild(play1x)
+  play_ctrls['inputs']['play1x'] = play1x
 
   var play3x = document.createElement('button')
   play3x.innerHTML = 'Play 3x'
-  shared_ctrls['box'].appendChild(play3x)
-  shared_ctrls['inputs']['play3x'] = play3x
+  css(play3x, button_style)
+  play_ctrls['box'].appendChild(play3x)
+  play_ctrls['inputs']['play3x'] = play3x
   play3x.style['font-weight'] = 'bold'
 
   var play100x = document.createElement('button')
   play100x.innerHTML = 'Play 100x'
-  shared_ctrls['box'].appendChild(play100x)
-  shared_ctrls['inputs']['play100x'] = play100x
+  css(play100x, button_style)
+  play_ctrls['box'].appendChild(play100x)
+  play_ctrls['inputs']['play100x'] = play100x
   play100x.style['font-weight'] = 'bold'
+
+  var clear = document.createElement('button')
+  clear.innerHTML = 'Clear'
+  css(clear, button_style)
+  play_ctrls['box'].appendChild(clear)
+  play_ctrls['inputs']['clear'] = clear
+  clear.style['font-weight'] = 'bold'
+
 
   var walkthrough = document.createElement('button')
   walkthrough.innerHTML = 'Walkthrough (tutorial)'
   walkthrough.disabled = true
-  shared_ctrls['box'].appendChild(walkthrough)
-  shared_ctrls['inputs']['walkthrough'] = walkthrough
+  css(walkthrough, button_style)
+  play_ctrls['box'].appendChild(walkthrough)
+  play_ctrls['inputs']['walkthrough'] = walkthrough
   walkthrough.style['font-weight'] = 'bold'
-
-  var clear = document.createElement('button')
-  clear.innerHTML = 'Clear'
-  shared_ctrls['box'].appendChild(clear)
-  shared_ctrls['inputs']['clear'] = clear
-  clear.style['font-weight'] = 'bold'
-
 
 
   function naive_copy_obj (obj) {
@@ -327,10 +356,12 @@ function setup_pop1 (state) {
   opts.root.appendChild(pop0_ctrls['box'])
   opts.root.appendChild(pop1_ctrls['box'])
   opts.root.appendChild(shared_ctrls['box'])
+  opts.root.appendChild(play_ctrls['box'])
   self.state = state
   self.shared_ctrls = shared_ctrls
   self.pop0_ctrls = pop0_ctrls
   self.pop1_ctrls = pop1_ctrls
+  self.play_ctrls = play_ctrls
 }
 
 module.exports = controls

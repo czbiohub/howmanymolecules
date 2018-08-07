@@ -57,8 +57,8 @@ function simulation (controls) {
 
   function play (duration, N, display) {
 
-    var play_buttons = [controls.shared_ctrls['inputs']['play3x'], controls.shared_ctrls['inputs']['play1x'], controls.shared_ctrls['inputs']['play100x'], controls.shared_ctrls['inputs']['clear']]
-    console.log(controls.shared_ctrls)
+    var play_buttons = [controls.play_ctrls['inputs']['play3x'], controls.play_ctrls['inputs']['play1x'], controls.play_ctrls['inputs']['play100x'], controls.play_ctrls['inputs']['clear']]
+    console.log(controls.play_ctrls)
     console.log(play_buttons)
     var total_time = N*duration
 
