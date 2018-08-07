@@ -220,6 +220,7 @@ function controls (opts) {
         }
         state['pop1_params']['true_counts'] = true_pop1_counts
       }
+      self.emit('distrib_change')
   }
 
 

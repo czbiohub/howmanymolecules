@@ -32,6 +32,12 @@ function simulation (controls) {
   var counts0 = []
   var counts1 = []
 
+  controls.on('distrib_change', function (e) {
+  if (controls.state['shared_params']['showtrue']==true) {
+    add_true_distribution()
+  }
+})
+
   controls.on('play', function (e) {
     if (e == '1x') play(4500, 1, true)
     if (e == '3x') play(1500, 3, true)
@@ -110,9 +116,9 @@ function simulation (controls) {
 
   function add_true_distribution() {
     if (controls.state['shared_params']['showtrue'] == true) {
-      true_hist0 = histogram(svg, controls.state['pop0_params']['true_counts'], coords['histogram'], null, [0, 1000], '#646464', 2)
+      true_hist0 = histogram(svg, controls.state['pop0_params']['true_counts'], coords['histogram'], null, [0, 1000], controls.state['pop0_params']['color'], 2, true)
       if (controls.state['shared_params']['comparepops'] == true) {
-        true_hist1 = histogram(svg, controls.state['pop1_params']['true_counts'], coords['histogram'], null, [0, 1000], '#646464', 3)
+        true_hist1 = histogram(svg, controls.state['pop1_params']['true_counts'], coords['histogram'], null, [0, 1000], controls.state['pop1_params']['color'], 3, true)
         }
       }
     }
@@ -147,10 +153,10 @@ function simulation (controls) {
 
     // animate four cells
     if (display) {
-      animate(svg, sim[0], coords[0], coords['histogram'], duration, controls.state['pop0_params']['color'], 0)
-      animate(svg, sim[1], coords[1], coords['histogram'], duration, controls.state['pop0_params']['color'], 1)
-      animate(svg, sim[2], coords[2], coords['histogram'], duration, controls.state['pop1_params']['color'], 2)
-      animate(svg, sim[3], coords[3], coords['histogram'], duration, controls.state['pop1_params']['color'], 3)
+      animate(svg, sim[0], coords[0], coords['histogram'], duration, controls.state['pop0_params']['color'], 0, false)
+      animate(svg, sim[1], coords[1], coords['histogram'], duration, controls.state['pop0_params']['color'], 1, false)
+      animate(svg, sim[2], coords[2], coords['histogram'], duration, controls.state['pop1_params']['color'], 2, false)
+      animate(svg, sim[3], coords[3], coords['histogram'], duration, controls.state['pop1_params']['color'], 3, false)
     }
 
     // store the total cell counts
@@ -160,12 +166,12 @@ function simulation (controls) {
     if (controls.state['shared_params']['comparepops']) {
       counts1.push(sim[2].count)
       counts1.push(sim[3].count)
-      hist1 = histogram(svg, counts1, coords['histogram'], duration, history, controls.state['pop1_params']['color'], 1)
+      hist1 = histogram(svg, counts1, coords['histogram'], duration, history, controls.state['pop1_params']['color'], 1, false)
     } else {
       counts0.push(sim[2].count)
       counts0.push(sim[3].count)
     }
-    hist0 = histogram(svg, counts0, coords['histogram'], duration, history, controls.state['pop0_params']['color'], 0)
+    hist0 = histogram(svg, counts0, coords['histogram'], duration, history, controls.state['pop0_params']['color'], 0, false)
     }
 }
 
