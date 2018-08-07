@@ -6,6 +6,7 @@ var animate = require('./animate')
 var generate = require('./generate')
 var histogram = require('./histogram')
 var prob = require('prob.js')
+var walkthrough = require('./walkthrough.js')
 
 var width = 1100
 var height = 750
@@ -59,6 +60,11 @@ function simulation (controls) {
     else {
       clear_true_distrib()
     }
+  })
+
+  controls.on('walkthrough_button', function (e) {
+    console.log(walkthrough)
+    walkthrough(svg, controls, coords, 3000)
   })
 
   function play (duration, N, display) {

@@ -192,8 +192,8 @@ function controls (opts) {
 
   var walkthrough = document.createElement('button')
     walkthrough.innerHTML = 'Walkthrough (tutorial)'
-    walkthrough.disabled = true
-    walkthrough.style['opacity'] = 0.7
+    // walkthrough.disabled = false
+    walkthrough.style['opacity'] = 1
     css(walkthrough, button_style)
     play_ctrls['box'].appendChild(walkthrough)
     play_ctrls['inputs']['walkthrough'] = walkthrough
@@ -357,6 +357,8 @@ function controls (opts) {
     generate_true_counts(state)
   }
 
+
+
   play1x.onclick = function (e) {
     self.emit('play', '1x')
   }
@@ -370,6 +372,13 @@ function controls (opts) {
     self.emit('clear', true)
   }
 
+  walkthrough.onclick = function (e) {
+    self.emit('walkthrough')
+    console.log('button clicked')
+  }
+
+
+
   opts.root.appendChild(pop0_ctrls['box'])
   opts.root.appendChild(pop1_ctrls['box'])
   opts.root.appendChild(shared_ctrls['box'])
@@ -381,6 +390,7 @@ function controls (opts) {
   self.pop0_ctrls = pop0_ctrls
   self.pop1_ctrls = pop1_ctrls
   self.play_ctrls = play_ctrls
+  self.walkthrough = walkthrough
 }
 
 module.exports = controls
