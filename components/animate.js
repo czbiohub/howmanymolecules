@@ -32,7 +32,7 @@ function animate (svg, data, coords, histogram, duration, color, index) {
       .attr('y', function (d) {return d[5] ? coords.sample.y(d[4]) : coords.cell.y(d[1])})
     .transition() //duplicate for pcr
       .duration(duration * 0.1)
-      .attr('transform', function (d) {return (d[6] & d[5] ? 'translate(-5,-9)' : 'translate(-10,-4)')})
+      .attr('transform', function (d) {return (d[6] & d[5] ? 'translate(4,-10)' : 'translate(-10,-4)')})
     .transition() //turn into counts/bars
       .duration(duration * 0.15)
       .attr('x', function (d) {return d[5] ? coords.sample.x(d[7]) : coords.cell.x(d[0])})
