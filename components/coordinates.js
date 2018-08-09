@@ -88,7 +88,7 @@ coordinates[3].sample = {
 coordinates['histogram'] = {
   x: d3.scaleLinear()
     .domain([0, 60])
-    .range([50, 975])
+    .range([80, 980])
     .clamp(true),
   y: d3.scaleLinear()
     .domain([0, 0.1])

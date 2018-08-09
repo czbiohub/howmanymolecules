@@ -22,56 +22,96 @@ function controls (opts) {
   }
 
   var pop0_ctrl_style = {
-    backgroundColor: 'rgb(200,200,200)',
+    backgroundColor: '#FFFFFF',//rgb(200,200,200)',
     zIndex: '1000',
-    width: '170px',
-    height: '50%',
+    width: '190px',
+    height: '215px',
     position: 'absolute',
     left: '0px',
-    top: '0px',
+    top: '100px',
     borderRight: 'solid 4px #F768A1',
-    borderBottom: 'solid 4px #F768A1'
+    borderTop: 'solid 4px #F768A1',
+    borderBottom: 'solid 4px #F768A1',
+    padding: '0px 0px 0px 10px',
   }
 
   var pop1_ctrl_style = {
-    backgroundColor: 'rgb(200,200,200)',
+    backgroundColor: '#FFFFFF',//rgb(200,200,200)',
     zIndex: '1000',
-    width: '170px',
-    height: '50%',
+    width: '190px',
+    height: '30%',
     position: 'absolute',
     right: '0px',
-    top: '0px',
+    top: '100px',
     borderLeft: 'solid 4px #B191DB',
-    borderBottom: 'solid 4px #B191DB'
+    borderTop: 'solid 4px #B191DB',
+    borderBottom: 'solid 4px #B191DB',
+    padding: '0px 7px 0px 3px'
   }
 
   var shared_ctrl_style = {
-    backgroundColor: 'rgb(200,200,200)',
+    backgroundColor: '#FFFFFF',//rgb(200,200,200)',
     zIndex: '1000',
-    width: '170px',
-    height: '45%',
+    width: '190px',
+    height: '360px',
     position: 'absolute',
     left: '0px',
-    bottom: '0px',
+    top: '340px',
     borderRight: 'solid 4px #646464',
-    borderTop: 'solid 4px #646464'
+    borderBottom: 'solid 4px #646464',
+    borderTop: 'solid 4px #646464',
+    padding: '0px 0px 0px 10px',
   }
 
+  var play_ctrl_style = {
+    // backgroundColor: '#FFFFFF',//rgb(200,200,200)',
+    // opacity: '.7',
+    zIndex: '1000',
+    width: '190px',
+    padding: '0px 7px 0px 0px',
+    height: '100px',
+    position: 'absolute',
+    right: '0px',
+    top: '345px',
+    padding: '0px 10px 0px 0px'
+    // borderLeft: 'solid 4px #646464',
+    // borderBottom: 'solid 4px #646464',
+    // borderTop: 'solid 4px #646464',
+  }
 
   var pop0_ctrls = make_ctrlpanel(pop0_ctrl_style)
   var pop1_ctrls = make_ctrlpanel(pop1_ctrl_style)
   var shared_ctrls = make_ctrlpanel(shared_ctrl_style)
+  var play_ctrls = make_ctrlpanel(play_ctrl_style)
 
   var title = document.createElement('div')
-  title.innerHTML = 'howmanymolecules'
-  pop0_ctrls['box'].appendChild(title)
+    title.innerHTML = 'how many\nmolecules'
+    title.style['font-weight'] = 'bold'
+    title.style['font-size'] = '36px'
+    title.style['height'] = '80px'
+    title.style['width'] = '190px'
+    title.style['padding'] = '0px 10px 0px 0px'
+    title.style['align-items'] = 'center'
+    opts.root.appendChild(title)
 
+  var about = document.createElement('div')
+    about.innerHTML='Questions? Suggestions? Find us on twitter: <a href=\'https://twitter.com/thebasepoint\'>Josh Batson</a>, <a href=\'https://twitter.com/sidneymbell\'>Sidney Bell</a>, <a href=\'https://twitter.com/thefreemanlab\'>Jeremy Freeman</a> <a href=\'https://www.github.com/czbiohub/howmanymolecules\'>& github</a>'
+    css(about, {'bottom': '-40px',
+    'left': '270px',
+    'padding': '0px 10px 10px 0px',
+    'width': '960px',
+    'position': 'absolute',
+    'font-style': 'italic',
+    'font-size': '12px',
+    'text-align': 'center'})
+
+  // shared_ctrls['box'].appendChild(title)
 
   function make_ctrl (name, label, type, params, ctrlpanel) {
     ctrlpanel['group'][name] = document.createElement('div')
     css(ctrlpanel['group'][name], {
-      marginBottom: '10px',
-      marginTop: '10px'
+      marginBottom: '15px',
+      marginTop: '5px',
     })
     ctrlpanel['box'].appendChild(ctrlpanel['group'][name])
     ctrlpanel['labels'][name] = document.createElement('div')
@@ -101,39 +141,62 @@ function controls (opts) {
   }
 
   make_ctrl('nmolecules', 'Total molecules per cell', 'range', {min: 0, max: 100, value: 50, step: 1}, pop0_ctrls)
-  make_ctrl('expression', 'Expression level', 'range', {min: 0, max: 1, value: .2, step: .01}, pop0_ctrls)
   make_ctrl('samples', 'Sampling depth', 'range', {min: 0, max: 1, value: 0.7, step: 0.01}, pop0_ctrls)
+  make_ctrl('expression', 'Expression level', 'range', {min: 0, max: 1, value: .2, step: .01}, pop0_ctrls)
 
   make_ctrl('nmolecules', 'Total molecules per cell', 'range', {min: 0, max: 100, value: 50, step: 1}, pop1_ctrls)
-  make_ctrl('expression', 'Expression level', 'range', {min: 0, max: 1, value: .2, step: .01}, pop1_ctrls)
   make_ctrl('samples', 'Sampling depth', 'range', {min: 0, max: 1, value: 0.7, step: 0.01}, pop1_ctrls)
+  make_ctrl('expression', 'Expression level', 'range', {min: 0, max: 1, value: .2, step: .01}, pop1_ctrls)
 
-  make_ctrl('pcr', 'Amplify?', 'checkbox', {value: false}, shared_ctrls)
+  make_ctrl('pcr', 'Amplify? (PCR)', 'checkbox', {value: false}, shared_ctrls)
+  make_ctrl('normalize', 'Normalize to counts/100?', 'checkbox', {value: false}, shared_ctrls)
+  make_ctrl('log', 'Log-normalize?', 'checkbox', {value: false}, shared_ctrls)
+  make_ctrl('comparepops', 'Compare two populations?', 'checkbox', {value: true}, shared_ctrls)
   make_ctrl('accumulate_history', 'Accumulate all samples?', 'checkbox', {value: false}, shared_ctrls)
   make_ctrl('showtrue', 'Show true distribution?', 'checkbox', {value: false}, shared_ctrls)
-  make_ctrl('comparepops', 'Compare two populations?', 'checkbox', {value: true}, shared_ctrls)
-  make_ctrl('normalize', 'Normalize to counts per 100?', 'checkbox', {value: false}, shared_ctrls)
-  make_ctrl('log', 'Log-normalize?', 'checkbox', {value: false}, shared_ctrls)
 
+
+  button_style = {
+    'font-weight': 'bold',
+    'font-size': '20px',
+    'text-align': 'center',
+    'background-color': '#FFFFFF',
+    'color': '#646464',
+    'padding': '0px, 30px',
+    'border-radius': '6px',
+    'border': '2px solid #646464',
+  }
   var play1x = document.createElement('button')
-  play1x.innerHTML = 'play 1x'
-  shared_ctrls['box'].appendChild(play1x)
-  shared_ctrls['inputs']['play1x'] = play1x
+    play1x.innerHTML = 'Play 1x'
+    css(play1x, button_style)
+    play_ctrls['box'].appendChild(play1x)
+    play_ctrls['inputs']['play1x'] = play1x
 
   var play3x = document.createElement('button')
-  play3x.innerHTML = 'play 3x'
-  shared_ctrls['box'].appendChild(play3x)
-  shared_ctrls['inputs']['play3x'] = play3x
+    play3x.innerHTML = 'Play 3x'
+    css(play3x, button_style)
+    play_ctrls['box'].appendChild(play3x)
+    play_ctrls['inputs']['play3x'] = play3x
 
   var play100x = document.createElement('button')
-  play100x.innerHTML = 'play 100x'
-  shared_ctrls['box'].appendChild(play100x)
-  shared_ctrls['inputs']['play100x'] = play100x
+    play100x.innerHTML = 'Play 100x'
+    css(play100x, button_style)
+    play_ctrls['box'].appendChild(play100x)
+    play_ctrls['inputs']['play100x'] = play100x
 
   var clear = document.createElement('button')
-  clear.innerHTML = 'clear'
-  shared_ctrls['box'].appendChild(clear)
-  shared_ctrls['inputs']['clear'] = clear
+    clear.innerHTML = 'Clear'
+    css(clear, button_style)
+    play_ctrls['box'].appendChild(clear)
+    play_ctrls['inputs']['clear'] = clear
+
+  var walkthrough = document.createElement('button')
+    walkthrough.innerHTML = 'Walkthrough (tutorial)'
+    walkthrough.disabled = true
+    walkthrough.style['opacity'] = 0.7
+    css(walkthrough, button_style)
+    play_ctrls['box'].appendChild(walkthrough)
+    play_ctrls['inputs']['walkthrough'] = walkthrough
 
   function naive_copy_obj (obj) {
     var new_obj = {}
@@ -168,39 +231,40 @@ function controls (opts) {
         }
         state['pop1_params']['true_counts'] = true_pop1_counts
       }
+      self.emit('distrib_change')
   }
 
 
   var state = {
     'shared_params': {
-    'accumulate_history': shared_ctrls['inputs']['accumulate_history'].checked,
-    'showtrue': shared_ctrls['inputs']['showtrue'].checked,
-    'comparepops': shared_ctrls['inputs']['comparepops'].checked,
-    'normalize': shared_ctrls['inputs']['normalize'].checked,
-    'log': shared_ctrls['inputs']['log'].checked
-  },
-  'pop0_params': {
-    'pcr': shared_ctrls['inputs']['pcr'].checked,
-    'nmolecules': parseFloat(pop0_ctrls['inputs']['nmolecules'].value),
-    'expression': parseFloat(pop0_ctrls['inputs']['expression'].value),
-    'samples': parseFloat(pop0_ctrls['inputs']['samples'].value),
-    'color': '#F768A1',
-  },
-}
-
-function setup_pop1 (state) {
-  if (state['shared_params']['comparepops'] == false) {
-    state['pop1_params'] = state['pop0_params']
-  } else {
-    state['pop1_params'] = {
+      'accumulate_history': shared_ctrls['inputs']['accumulate_history'].checked,
+      'showtrue': shared_ctrls['inputs']['showtrue'].checked,
+      'comparepops': shared_ctrls['inputs']['comparepops'].checked,
+      'normalize': shared_ctrls['inputs']['normalize'].checked,
+      'log': shared_ctrls['inputs']['log'].checked
+    },
+    'pop0_params': {
       'pcr': shared_ctrls['inputs']['pcr'].checked,
-      'nmolecules': parseFloat(pop1_ctrls['inputs']['nmolecules'].value),
-      'expression': parseFloat(pop1_ctrls['inputs']['expression'].value),
-      'samples': parseFloat(pop1_ctrls['inputs']['samples'].value),
-      'color': '#B191DB',
+      'nmolecules': parseFloat(pop0_ctrls['inputs']['nmolecules'].value),
+      'expression': parseFloat(pop0_ctrls['inputs']['expression'].value),
+      'samples': parseFloat(pop0_ctrls['inputs']['samples'].value),
+      'color': '#F768A1',
+    },
+  }
+
+  function setup_pop1 (state) {
+    if (state['shared_params']['comparepops'] == false) {
+      state['pop1_params'] = state['pop0_params']
+    } else {
+      state['pop1_params'] = {
+        'pcr': shared_ctrls['inputs']['pcr'].checked,
+        'nmolecules': parseFloat(pop1_ctrls['inputs']['nmolecules'].value),
+        'expression': parseFloat(pop1_ctrls['inputs']['expression'].value),
+        'samples': parseFloat(pop1_ctrls['inputs']['samples'].value),
+        'color': '#B191DB',
+      }
     }
   }
-}
 
   setup_pop1(state)
   generate_true_counts(state)
@@ -223,17 +287,25 @@ function setup_pop1 (state) {
 
     pop1_ctrls['box'].style.borderLeft ='solid 4px ' + state['pop1_params']['color']
     pop1_ctrls['box'].style.borderBottom = 'solid 4px '+ state['pop1_params']['color']
+    pop1_ctrls['box'].style.borderTop = 'solid 4px '+ state['pop1_params']['color']
+
 
     if (state['shared_params']['comparepops']) {
       pop1_ctrls['inputs']['nmolecules'].disabled = false
+      pop1_ctrls['inputs']['nmolecules'].style['opacity'] = 1
       pop1_ctrls['inputs']['expression'].disabled = false
+      pop1_ctrls['inputs']['expression'].style['opacity'] = 1
       pop1_ctrls['inputs']['samples'].disabled = false
+      pop1_ctrls['inputs']['samples'].style['opacity'] = 1
       pop1_ctrls['box'].style.opacity = 1
 
     } else {
       pop1_ctrls['inputs']['nmolecules'].disabled = true
+      pop1_ctrls['inputs']['nmolecules'].style['opacity'] = 0.7
       pop1_ctrls['inputs']['expression'].disabled = true
+      pop1_ctrls['inputs']['expression'].style['opacity'] = 0.7
       pop1_ctrls['inputs']['samples'].disabled = true
+      pop1_ctrls['inputs']['samples'].style['opacity'] = 0.7
       pop1_ctrls['box'].style.opacity = 0.5
     }
 
@@ -301,10 +373,14 @@ function setup_pop1 (state) {
   opts.root.appendChild(pop0_ctrls['box'])
   opts.root.appendChild(pop1_ctrls['box'])
   opts.root.appendChild(shared_ctrls['box'])
+  opts.root.appendChild(play_ctrls['box'])
+  opts.root.appendChild(about)
+
   self.state = state
   self.shared_ctrls = shared_ctrls
   self.pop0_ctrls = pop0_ctrls
   self.pop1_ctrls = pop1_ctrls
+  self.play_ctrls = play_ctrls
 }
 
 module.exports = controls

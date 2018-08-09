@@ -1,7 +1,7 @@
 var d3 = require('d3')
 var _ = require('lodash')
 
-function histogram (svg, counts, coords, duration, history, color, index) {
+function histogram (svg, counts, coords, duration, history, color, index, true_distrib_boolean) {
 
 	// create histogram with ticks and density estimate
 
@@ -42,9 +42,19 @@ function histogram (svg, counts, coords, duration, history, color, index) {
 
     svg.selectAll('.path' + index).remove()
 
+
+    if (true_distrib_boolean == true) {
+      var opacity = 0.7
+      var dasharray="10,10"
+    } else {
+      var opacity = 1
+      var dasharray=null
+    }
+
     svg.append('path')
       .datum(density)
-      .attr('opacity', 1)
+      .attr('opacity', opacity)
+      .attr('stroke-dasharray', dasharray)
       .attr('class', 'path' + index)
       .attr('fill', 'none')
       .attr('stroke', color)
