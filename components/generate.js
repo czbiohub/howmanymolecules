@@ -145,7 +145,7 @@ function generate (shared_params, params) {
                                (2/(counts[0] + counts[1]) * counts[1]) * 0.75]
      for (i = 0; i < init.length; i++) {
        init[i][11] = init[i][2] ? normalized_height[1] : normalized_height[0]
-       console.log(init[i][11])
+       init[i][12] = 1
      }
     }
     return init
