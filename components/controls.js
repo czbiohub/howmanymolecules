@@ -25,10 +25,10 @@ function controls (opts) {
     backgroundColor: '#FFFFFF',//rgb(200,200,200)',
     zIndex: '1000',
     width: '190px',
-    height: '215px',
+    height: '170px',
     position: 'absolute',
     left: '0px',
-    top: '100px',
+    top: '120px',
     borderRight: 'solid 4px #F768A1',
     borderTop: 'solid 4px #F768A1',
     borderBottom: 'solid 4px #F768A1',
@@ -39,10 +39,10 @@ function controls (opts) {
     backgroundColor: '#FFFFFF',//rgb(200,200,200)',
     zIndex: '1000',
     width: '190px',
-    height: '30%',
+    height: '170px',
     position: 'absolute',
     right: '0px',
-    top: '100px',
+    top: '120px',
     borderLeft: 'solid 4px #B191DB',
     borderTop: 'solid 4px #B191DB',
     borderBottom: 'solid 4px #B191DB',
@@ -53,7 +53,7 @@ function controls (opts) {
     backgroundColor: '#FFFFFF',//rgb(200,200,200)',
     zIndex: '1000',
     width: '190px',
-    height: '360px',
+    height: '300px',
     position: 'absolute',
     left: '0px',
     top: '340px',
@@ -72,7 +72,7 @@ function controls (opts) {
     height: '100px',
     position: 'absolute',
     right: '0px',
-    top: '345px',
+    top: '340px',
     padding: '0px 10px 0px 0px'
     // borderLeft: 'solid 4px #646464',
     // borderBottom: 'solid 4px #646464',
@@ -140,19 +140,19 @@ function controls (opts) {
     ctrlpanel['group'][name].appendChild(ctrlpanel['values'][name])
   }
 
-  make_ctrl('nmolecules', 'Total molecules per cell', 'range', {min: 0, max: 100, value: 50, step: 1}, pop0_ctrls)
-  make_ctrl('samples', 'Sampling depth', 'range', {min: 0, max: 1, value: 0.7, step: 0.01}, pop0_ctrls)
+  // make_ctrl('nmolecules', 'Total molecules per cell', 'range', {min: 0, max: 100, value: 50, step: 1}, pop0_ctrls)
+  make_ctrl('samples', 'N molecules sampled', 'range', {min: 0, max: 100, value: 70, step: 1}, pop0_ctrls)
   make_ctrl('expression', 'Expression level', 'range', {min: 0, max: 1, value: .2, step: .01}, pop0_ctrls)
 
-  make_ctrl('nmolecules', 'Total molecules per cell', 'range', {min: 0, max: 100, value: 50, step: 1}, pop1_ctrls)
-  make_ctrl('samples', 'Sampling depth', 'range', {min: 0, max: 1, value: 0.7, step: 0.01}, pop1_ctrls)
+  // make_ctrl('nmolecules', 'Total molecules per cell', 'range', {min: 0, max: 100, value: 50, step: 1}, pop1_ctrls)
+  make_ctrl('samples', 'N molecules sampled', 'range', {min: 0, max: 100, value: 70, step: 1}, pop1_ctrls)
   make_ctrl('expression', 'Expression level', 'range', {min: 0, max: 1, value: .2, step: .01}, pop1_ctrls)
 
   make_ctrl('pcr', 'Amplify? (PCR)', 'checkbox', {value: false}, shared_ctrls)
   make_ctrl('normalize', 'Normalize to counts/100?', 'checkbox', {value: false}, shared_ctrls)
   make_ctrl('log', 'Log-normalize?', 'checkbox', {value: false}, shared_ctrls)
   make_ctrl('comparepops', 'Compare two populations?', 'checkbox', {value: true}, shared_ctrls)
-  make_ctrl('accumulate_history', 'Accumulate all samples?', 'checkbox', {value: false}, shared_ctrls)
+  // make_ctrl('accumulate_history', 'Accumulate all samples?', 'checkbox', {value: false}, shared_ctrls)
   make_ctrl('showtrue', 'Show true distribution?', 'checkbox', {value: false}, shared_ctrls)
 
 
@@ -237,7 +237,7 @@ function controls (opts) {
 
   var state = {
     'shared_params': {
-      'accumulate_history': shared_ctrls['inputs']['accumulate_history'].checked,
+      // 'accumulate_history': shared_ctrls['inputs']['accumulate_history'].checked,
       'showtrue': shared_ctrls['inputs']['showtrue'].checked,
       'comparepops': shared_ctrls['inputs']['comparepops'].checked,
       'normalize': shared_ctrls['inputs']['normalize'].checked,
@@ -245,7 +245,7 @@ function controls (opts) {
     },
     'pop0_params': {
       'pcr': shared_ctrls['inputs']['pcr'].checked,
-      'nmolecules': parseFloat(pop0_ctrls['inputs']['nmolecules'].value),
+      // 'nmolecules': parseFloat(pop0_ctrls['inputs']['nmolecules'].value),
       'expression': parseFloat(pop0_ctrls['inputs']['expression'].value),
       'samples': parseFloat(pop0_ctrls['inputs']['samples'].value),
       'color': '#F768A1',
@@ -258,7 +258,7 @@ function controls (opts) {
     } else {
       state['pop1_params'] = {
         'pcr': shared_ctrls['inputs']['pcr'].checked,
-        'nmolecules': parseFloat(pop1_ctrls['inputs']['nmolecules'].value),
+        // 'nmolecules': parseFloat(pop1_ctrls['inputs']['nmolecules'].value),
         'expression': parseFloat(pop1_ctrls['inputs']['expression'].value),
         'samples': parseFloat(pop1_ctrls['inputs']['samples'].value),
         'color': '#B191DB',
@@ -277,9 +277,9 @@ function controls (opts) {
     state['shared_params']['showtrue'] = e.target.checked
     self.emit('showtrue', e.target.checked)
   }
-  shared_ctrls['inputs']['accumulate_history'].oninput = function (e) {
-    state['shared_params']['accumulate_history'] = e.target.checked
-  }
+  // shared_ctrls['inputs']['accumulate_history'].oninput = function (e) {
+    // state['shared_params']['accumulate_history'] = e.target.checked
+  // }
   shared_ctrls['inputs']['comparepops'].oninput = function (e) {
     self.emit('clear', true)
     state['shared_params']['comparepops'] = e.target.checked
@@ -291,8 +291,8 @@ function controls (opts) {
 
 
     if (state['shared_params']['comparepops']) {
-      pop1_ctrls['inputs']['nmolecules'].disabled = false
-      pop1_ctrls['inputs']['nmolecules'].style['opacity'] = 1
+      // pop1_ctrls['inputs']['nmolecules'].disabled = false
+      // pop1_ctrls['inputs']['nmolecules'].style['opacity'] = 1
       pop1_ctrls['inputs']['expression'].disabled = false
       pop1_ctrls['inputs']['expression'].style['opacity'] = 1
       pop1_ctrls['inputs']['samples'].disabled = false
@@ -300,8 +300,8 @@ function controls (opts) {
       pop1_ctrls['box'].style.opacity = 1
 
     } else {
-      pop1_ctrls['inputs']['nmolecules'].disabled = true
-      pop1_ctrls['inputs']['nmolecules'].style['opacity'] = 0.7
+      // pop1_ctrls['inputs']['nmolecules'].disabled = true
+      // pop1_ctrls['inputs']['nmolecules'].style['opacity'] = 0.7
       pop1_ctrls['inputs']['expression'].disabled = true
       pop1_ctrls['inputs']['expression'].style['opacity'] = 0.7
       pop1_ctrls['inputs']['samples'].disabled = true
@@ -324,11 +324,11 @@ function controls (opts) {
     generate_true_counts(state)
   }
 
-  pop0_ctrls['inputs']['nmolecules'].oninput = function (e) {
-    state['pop0_params']['nmolecules'] = parseFloat(e.target.value)
-    pop0_ctrls['values']['nmolecules'].innerHTML = state['pop0_params']['nmolecules']
-    generate_true_counts(state)
-  }
+  // pop0_ctrls['inputs']['nmolecules'].oninput = function (e) {
+    // state['pop0_params']['nmolecules'] = parseFloat(e.target.value)
+    // pop0_ctrls['values']['nmolecules'].innerHTML = state['pop0_params']['nmolecules']
+    // generate_true_counts(state)
+  // }
   pop0_ctrls['inputs']['expression'].oninput = function (e) {
     state['pop0_params']['expression'] = parseFloat(e.target.value)
     pop0_ctrls['values']['expression'].innerHTML = state['pop0_params']['expression']
@@ -341,11 +341,11 @@ function controls (opts) {
   }
 
 
-  pop1_ctrls['inputs']['nmolecules'].oninput = function (e) {
-    state['pop1_params']['nmolecules'] = parseFloat(e.target.value)
-    pop1_ctrls['values']['nmolecules'].innerHTML = state['pop1_params']['nmolecules']
-    generate_true_counts(state)
-  }
+  // pop1_ctrls['inputs']['nmolecules'].oninput = function (e) {
+  //   state['pop1_params']['nmolecules'] = parseFloat(e.target.value)
+  //   pop1_ctrls['values']['nmolecules'].innerHTML = state['pop1_params']['nmolecules']
+  //   generate_true_counts(state)
+  // }
   pop1_ctrls['inputs']['expression'].oninput = function (e) {
     state['pop1_params']['expression'] = parseFloat(e.target.value)
     pop1_ctrls['values']['expression'].innerHTML = state['pop1_params']['expression']

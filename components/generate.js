@@ -19,8 +19,8 @@ function generate (shared_params, params) {
   // where e is drawn from a poisson with mean u
   // sample positions randomly on the unit sphere
   function create () {
-    var n = params.nmolecules
-    var u = params.expression*params.nmolecules
+    var n = 100 //params.nmolecules
+    var u = params.expression*n//*params.nmolecules
     var rand = prob.uniform(0, 1)
     var e = prob.poisson(u)()
     if (e >= n) e = (n - 1)
@@ -44,7 +44,7 @@ function generate (shared_params, params) {
   function sample (init) {
     var rand = prob.uniform(0, 1)
     var data = init.map(function (d) {
-      var sample = (rand() < params.samples) ? 1 : 0
+      var sample = (rand() < params.samples/100) ? 1 : 0
       return _.concat(d, [d[0], d[1], sample])
     })
 
@@ -105,18 +105,23 @@ function generate (shared_params, params) {
   // stage five
   // determine normalized positions in a count "bucket"
   // by iterating over elements and stacking vertically
-  function stack (init, counts) {
+  function stack (init, counts, norm=false) {
 
-    var w = Math.min(((counts[1] > counts[0]) ? (2 / counts[1]) : (2 / counts[0])) * 0.8, 0.05)
+    if (!norm) {
+      var w = Math.min(((counts[1] > counts[0]) ? (2 / counts[1]) : (2 / counts[0])) * 0.8, 0.05)
+    } else {
+      var w = 1/(counts[0] + counts[1])
+    }
+    console.log(norm, w)
     var dy0 = -0.75 // initial vertical position
     var dy1 = -0.75 // initial vertical position
     for (i = 0; i < init.length; i++) {
-      if (init[i][2]) {
+      if (init[i][2]) { // if pink
         init[i][7] = 0.25
         init[i][8] = dy1
         init[i][9] = normalize(counts)
         if (init[i][5] == 1) dy1 += w // increment if sampled
-      } else {
+      } else { // if gray
         init[i][7] = -0.25
         init[i][8] = dy0
         init[i][9] = 0
@@ -132,7 +137,7 @@ function generate (shared_params, params) {
   data = sample(data)
   data = amplify(data)
   counts = count(data)
-  data = stack(data, counts)
+  data = stack(data, counts, shared_params['normalize'])
   return {data: data, count: normalize(counts)}
 }
 

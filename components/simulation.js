@@ -145,11 +145,11 @@ function simulation (controls) {
                generate(controls.state['shared_params'], controls.state['pop1_params']),
                generate(controls.state['shared_params'], controls.state['pop1_params'])]
 
-    if (!controls.state['shared_params']['accumulate_history']) {
-      var history = [50, 250]
-    } else {
-      var history = [1500, 1500]
-    }
+    // if (!controls.state['shared_params']['accumulate_history']) {
+    //   var history = [50, 250]
+    // } else {
+    var history = [1500, 1500]
+    // }
 
     // animate four cells
     if (display) {
