@@ -4,9 +4,12 @@ var prob = require('prob.js')
 // generate underlying data for all stages of a simulation
 // we think of each molecule as a particle
 // data structure precomputes all neccessary information for each molecule
-// [x0, y0, label, x1, y1, sample, copy]
+// [x0, y0, label, x1, y1, sample, copy, x2, y2, count, norm_y, norm_height, normalize]
 // x0, y0 -> position in cell
 // x1, y1 -> position in sample space
+// x2, y2 -> position in stacked sample space
+// norm_y, norm_height -> y coordinate and height for normalized bars
+// normalize -> boolean for whether nontrivial normalization is performed
 // label -> gene identity (0 or 1)
 // sample -> is it sampled (1) or dropped (0)
 // copy -> is it a copy (1) or original (0)
@@ -103,30 +106,47 @@ function generate (shared_params, params) {
   }
 
   // stage five
-  // determine normalized positions in a count "bucket"
+  // determine positions in a count "bucket"
   // by iterating over elements and stacking vertically
   function stack (init, counts, norm=false) {
 
-    if (!norm) {
-      var w = Math.min(((counts[1] > counts[0]) ? (2 / counts[1]) : (2 / counts[0])) * 0.8, 0.05)
-    } else {
-      var w = 1/(counts[0] + counts[1])
-    }
-    console.log(norm, w)
+    var w = Math.min(((counts[1] > counts[0]) ? (2 / counts[1]) : (2 / counts[0])) * 0.75, 0.05)
+    var h0 = w*counts[0]
+    var h1 = w*counts[1]
+    var norm = normalize(counts)
+
     var dy0 = -0.75 // initial vertical position
     var dy1 = -0.75 // initial vertical position
+
     for (i = 0; i < init.length; i++) {
-      if (init[i][2]) { // if pink
-        init[i][7] = 0.25
-        init[i][8] = dy1
-        init[i][9] = normalize(counts)
+      if (init[i][2]) {
+        init[i][7] = 0.25 // x coord
+        init[i][8] = dy1 // y coord
+        init[i][11] = h1 // total height
         if (init[i][5] == 1) dy1 += w // increment if sampled
       } else { // if gray
         init[i][7] = -0.25
         init[i][8] = dy0
-        init[i][9] = 0
+        init[i][9] = norm
+        init[i][11] = h0
         if (init[i][5] == 1) dy0 += w // increment if sampled
       }
+      init[i][9] = norm // normalized count
+      init[i][10] = -0.75 // bottom of bar
+    }
+
+    return init
+  }
+
+  // stretch if normalization is being used
+  function stretch (init, counts){
+    if (shared_params['log'] | shared_params['normalize']) {
+      var normalized_height = [(2/(counts[0] + counts[1]) * counts[0]) * 0.75,
+                               (2/(counts[0] + counts[1]) * counts[1]) * 0.75]
+     for (i = 0; i < init.length; i++) {
+       init[i][11] = init[i][2] ? normalized_height[1] : normalized_height[0]
+       init[i][12] = 1
+     }
     }
     return init
   }
@@ -137,7 +157,8 @@ function generate (shared_params, params) {
   data = sample(data)
   data = amplify(data)
   counts = count(data)
-  data = stack(data, counts, shared_params['normalize'])
+  data = stack(data, counts)
+  data = stretch(data, counts)
   return {data: data, count: normalize(counts)}
 }
 

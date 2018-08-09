@@ -213,7 +213,7 @@ function controls (opts) {
       true_pop0_params['pcr'] = false
 
       true_pop0_counts = []
-      for (cell in _.range(0, 2000)) {
+      for (cell in _.range(0, 1000)) {
         true_pop0_counts.push(generate(state['shared_params'], true_pop0_params).count)
       }
 
