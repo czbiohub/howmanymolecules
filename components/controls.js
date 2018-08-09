@@ -374,7 +374,6 @@ function controls (opts) {
 
   walkthrough.onclick = function (e) {
     self.emit('walkthrough')
-    console.log('button clicked')
   }
 
 

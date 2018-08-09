@@ -62,8 +62,7 @@ function simulation (controls) {
     }
   })
 
-  controls.on('walkthrough_button', function (e) {
-    console.log(walkthrough)
+  controls.on('walkthrough', function (e) {
     walkthrough(svg, controls, coords, 3000)
   })
 

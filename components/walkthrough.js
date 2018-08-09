@@ -10,13 +10,14 @@ var prob = require('prob.js')
 function walkthrough(svg, controls, coords, duration) {
   if (!(this instanceof walkthrough)) return new walkthrough(svg, controls, coords, duration)
 
-  controls.on('walkthrough', lineup(duration))
-  console.log('made it to walkthrough main fn')
+  controls.on('walkthrough', function (e) {lineup(duration)})
 
   function lineup(duration) {
+    //
+    // console.log('svg before', svg)
+    // cell_explainer = setup(svg, coords[0], cell)
+    // console.log('svg after', svg)
 
-    cell_explainer = setup(svg, coords[0], cell)
-    console.log('cell explainer', cell_explainer)
     // this.emit('play1x')
 
 
@@ -29,5 +30,5 @@ function walkthrough(svg, controls, coords, duration) {
 
 
 
-
 }
+module.exports = walkthrough
