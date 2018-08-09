@@ -42,10 +42,8 @@ function animate (svg, data, coords, histogram, duration, color, index) {
       .style('stroke', 'none')
     .transition() //normalize
       .duration(duration * 0.1)
-      .attr('height', function (d) {return d[5] ? d[11] - d[10] : 15})
-      .attr('y', function (d) {return d[5] ? (d[11] + d[10])/2 : coords.cell.y(d[1])})
-      .attr('x', function (d) {return d[5] ? coords.sample.x(d[7]) : coords.cell.x(d[0])})
-      // .attr('transform', 'translate(-10,-4)')
+      .attr('height', function (d) {return d[5] ? (coords.sample.y(d[11] + d[10]) - coords.sample.y(d[10])) : 15})
+      .attr('y', function (d) {return d[5] ? (coords.sample.y(d[10])) : coords.cell.y(d[1])})
     .transition() //remove the gray count bar
       .duration(duration * 0.1)
       .style('opacity', function (d) {return ((d[5]) & (d[2] == 1)) ? 1 : 0})
